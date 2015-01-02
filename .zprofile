@@ -8,7 +8,10 @@ if which ssh >/dev/null ; then
 fi
 
 # Add default identities to ssh agent if needed.
-(ssh-add -l | grep 'The agent has no identities.' >/dev/null) && ssh-add
+EM=$(ssh-add -l 2>&1); E=$?
+if [ $E -eq 0 ]; then
+  (echo "$EM" | grep -q 'The agent has no identities.') && ssh-add
+fi
 
 #source /sw/bin/init.sh
 

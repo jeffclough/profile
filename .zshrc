@@ -52,5 +52,3 @@ alias lrtail='lrt|tail '
 
 alias MD='mark -Idiff'
 
-alias Excel='Open -a /Applications/Microsoft\ Office\ 2008/Microsoft\ Excel.app '
-alias Word='Open -a /Applications/Microsoft\ Office\ 2008/Microsoft\ Word.app '
