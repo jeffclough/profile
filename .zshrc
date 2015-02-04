@@ -1,3 +1,6 @@
+# Run our prolog, if available.
+[ -f ~/.rc-prolog ] && source ~/.rc-prolog
+
 # Some general ZShell settings.
 HISTFILE=~/.histfile
 HISTSIZE=1000
@@ -52,3 +55,5 @@ alias lrtail='lrt|tail '
 
 alias MD='mark -Idiff'
 
+# Run our epilog, if available.
+[ -f ~/.rc-epilog ] && source ~/.rc-epilog

@@ -1,3 +1,6 @@
+# Run our prolog, if available.
+[ -f ~/.profile-prolog ] && source ~/.profile-prolog
+
 export EDITOR=vi
 export TERM=xterm-color
 if which less >/dev/null ; then
@@ -40,21 +43,31 @@ prepend_path() {
   fi
   echo "$path" 
 }   
+
+# prepend_paths(app_path)
+# Prepend $app_path/(bin|sbin) to PATH.
+# Prepend $app_path/lib to LD_LIBRARY_PATH.
+# Prepend $app_path/(man|share/man) to MANPATH.
+prepend_paths() {
+  dir="$1"
+  dir="${dir//\/\///}"
+  PATH=$(prepend_path "$dir/bin")
+  PATH=$(prepend_path "$dir/sbin")
+  export PATH
+  LD_LIBRARY_PATH=$(prepend_path "$dir/lib" "$LD_LIBRARY_PATH")
+  export LD_LIBRARY_PATH
+  MANPATH=$(prepend_path "$dir/man" "$MANPATH")
+  MANPATH=$(prepend_path "$dir/share/man" "$MANPATH")
+  export MANPATH
+}
     
 # Prepend bin, sbin, lib, and man subdirectories (if they exist) of the
 # following paths to the appropriate environment variables' values.
 for p in / /usr /opt/local /sw /usr/local /usr/local/mysql /opt/subversion /usr/local/git "$HOME/my" "$HOME/test"
 do
-  export PATH=`prepend_path "$p/bin"`
-  export PATH=`prepend_path "$p/sbin"`
-  export LD_LIBRARY_PATH=`prepend_path "$p/lib" "$LD_LIBRARY_PATH"`
-  export MANPATH=`prepend_path "$p/man" "$MANPATH"`
-  export MANPATH=`prepend_path "$p/share/man" "$MANPATH"`
+  prepend_paths "$p"
 done
 export PYTHONPATH=`prepend_path "$HOME/my/lib/python" "$PYTHONPATH"`
-export LD_LIBRARY_PATH=`prepend_path "$HOME/my/lib/ImageMagick-6.6.3" "$LD_LIBRARY_PATH"`
-export MAGICK_HOME="$HOME/my"
-export PATH=`prepend_path "/android-sdk-mac_x86/tools"`
 
 # pip zsh completion start
 function _pip_completion {
@@ -68,8 +81,5 @@ function _pip_completion {
 compctl -K _pip_completion pip
 # pip zsh completion end
 
-
-# Setting PATH for Python 3.4
-# The orginal version is saved in .zprofile.pysave
-PATH="/Library/Frameworks/Python.framework/Versions/3.4/bin:${PATH}"
-export PATH
+# Run our epilog, if available.
+[ -f ~/.profile-epilog ] && source ~/.profile-epilog
