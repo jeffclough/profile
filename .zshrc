@@ -53,7 +53,17 @@ alias lld='ll -d'
 alias lrt='ll -rt'
 alias lrtail='lrt|tail '
 
+# Use MD to colorize diff output.
 alias MD='mark -Idiff'
+
+# Usage: ML [RE]
+# The optional regular expression limits output to matching lines.
+function ML {
+  local OPT=''
+  [ $# -gt 0 ] && OPT="--keep $1"
+  mark $OPT 'E(RROR)?:.*' 'I(NFO)?:.*' 'W(ARN(ING)?)?:.*' 'D(EBUG)?:.*' 'N(OTICE)?:.*'
+}
+export -f ML >/dev/null
 
 # Run our epilog, if available.
 [ -f ~/.rc-epilog ] && source ~/.rc-epilog

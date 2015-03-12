@@ -1,11 +1,66 @@
 # Run our prolog, if available.
 [ -f ~/.profile-prolog ] && source ~/.profile-prolog
 
-export EDITOR=vi
-export TERM=xterm-color
-if which less >/dev/null ; then
-  export PAGER=`which less`
+# In support of platform dependence ...
+osname=$(uname -s)
+if [[ "$osname" == "Darwin" ]]; then
+  # This is a Mac OS X machine.
+  oskernel=$(uname -r|cut -d. -f-2)
+  architecture=$(uname -m)
+  osrelease=$(defaults read loginwindow SystemVersionStampAsString|cut -d. -f-2)
+else 
+  # Treat this is (more or less) straight Unix (whatever that is).
+  oskernel=$(uname -r|cut -d. -f-2)
+  architecture=$(uname -p)
+  if [[ "$architecture" == "unknown" ]]; then
+    # Under Raspian, -p reports "unknown", but -m works.
+    architecture=$(uname -m)
+  fi
+  osrelease=''
+  x=/etc/redhat-release
+  if [[ "$osname" == "Linux" && -f "$x" ]]; then
+    # It must be Red Hat.
+    unset y
+    grep -q 'Red Hat Enterprise Linux' $x && y='rhel'
+    osrelease="$y$(grep -Po '(?<=release )\d+' $x)"
+    # Keep Redhat's sadistically crafted /etc/zlogout from running.
+    setopt noglobalrcs
+  fi
 fi
+
+# Make a place for architecture/OS dependent files, because home directories
+# might be portable.
+ARCHOS="$HOME"
+rt_env_type="${osname}${oskernel:+_$oskernel}${architecture:+_$architecture}"
+for part in my archos "$rt_env_type"; do
+  ARCHOS="$ARCHOS/$part"
+  if [ ! -d "$ARCHOS" ]; then
+    mkdir "$ARCHOS"
+    chmod 755 "$ARCHOS"
+  fi
+done
+export ARCHOS # Things like "make" will need access to this variable.
+for branch in bin sbin lib man share share/man; do
+  d="$ARCHOS/$branch"
+  if [ ! -d "$d" ]; then
+    mkdir "$d"
+    chmod 755 "$d"
+  fi
+done
+
+# Point EDITOR at vim, or failing that, vi.
+unalias vi vim 2>/dev/null
+unset EDITOR
+which vim >/dev/null 2>&1 && export EDITOR=$(which vim)
+[ -z "$EDITOR" ] && which vi >/dev/null 2>&1 && export EDITOR=$(which vi)
+
+# Point PAGER at less, or failing that, more.
+unset PAGER
+which less >/dev/null 2>&1 && export PAGER=$(which less)
+[ -z "$PAGER" ] && which more >/dev/null 2>&1 && export PAGER=$(which more)
+
+# Make sure rsync uses ssh for communication with other hosts.
+unset RSYNC_RSH
 if which ssh >/dev/null ; then
   export RSYNC_RSH=`which ssh`
 fi
