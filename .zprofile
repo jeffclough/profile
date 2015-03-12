@@ -10,14 +10,6 @@ if which ssh >/dev/null ; then
   export RSYNC_RSH=`which ssh`
 fi
 
-# Add default identities to ssh agent if needed.
-EM=$(ssh-add -l 2>&1); E=$?
-if [ $E -eq 0 ]; then
-  (echo "$EM" | grep -q 'The agent has no identities.') && ssh-add
-fi
-
-#source /sw/bin/init.sh
-
 # prepend_path(path[,pathlist])
 # Prepend path (if it is a directory) to pathlist. If pathlist is not given,
 # the value of the PATH environment variable is used. If path already exists in
