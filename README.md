@@ -5,7 +5,7 @@ profiles across all the machines I need to do work on.
 
 ###.zshenv (and .env-prolog and .env-epilog)
 Zshell sources this file first for all instances (in the absence of -f). This is
-where I set up the environment I want EVERYTHING to run in.
+where I set up the environment I want *everything* to run in.
 
 ###.zprofile (and .profile-prolog and .profile-epilog)
 Zshell sources .zprofile after .zshenv and before .zshrc. Other than that, it's
