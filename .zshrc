@@ -25,7 +25,7 @@ windowtitle() {
 
 # Before each prompt, show the host name in the terminal window's title bar.
 precmd() {
-  mname=`print -Pn %m|sed -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
+  mname=`print -Pn %M|sed -e 's/.gatech\.edu//' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
   windowtitle "%n@$mname"
 }
 
@@ -52,6 +52,8 @@ alias lla='ll -a'
 alias lld='ll -d'
 alias lrt='ll -rt'
 alias lrtail='lrt|tail '
+
+which vim >>/dev/null && alias vi="$(which vim) "
 
 # Use MD to colorize diff output.
 alias MD='mark -Idiff'
