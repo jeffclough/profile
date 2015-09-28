@@ -79,6 +79,7 @@ command history options, command aliases, and window title management here.
 - `lrt='ll -rt'`
 - `lrtail='lrt|tail '`
 - `MD='mark -Idiff'`
+- `vi='/usr/bin/vim '`
 
 ---
 
