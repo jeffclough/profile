@@ -80,6 +80,7 @@ command history options, command aliases, and window title management here.
 - `lrtail='lrt|tail '`
 - `MD='mark -Idiff'`
 - `vi='/usr/bin/vim '`
+- `view='/usr/bin/vim -R '`
 
 ---
 

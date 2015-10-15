@@ -49,9 +49,12 @@ for branch in bin sbin lib man share share/man; do
 done
 
 # Point EDITOR at vim, or failing that, vi.
-unalias vi vim 2>/dev/null
+unalias vi vim view 2>/dev/null
 unset EDITOR
-which vim >/dev/null 2>&1 && export EDITOR=$(which vim)
+if (which vim >/dev/null 2>&1) then
+  alias vi='vim '
+  alias view='vim -R '
+fi
 [ -z "$EDITOR" ] && which vi >/dev/null 2>&1 && export EDITOR=$(which vi)
 
 # Point PAGER at less, or failing that, more.
