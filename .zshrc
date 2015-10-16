@@ -53,7 +53,8 @@ alias lld='ll -d'
 alias lrt='ll -rt'
 alias lrtail='lrt|tail '
 
-which vim >>/dev/null && alias vi="$(which vim) "
+alias vi='/usr/bin/vim '
+alias view='/usr/bin/vim -R '
 
 # Use MD to colorize diff output.
 alias MD='mark -Idiff'

@@ -49,24 +49,18 @@ for branch in bin sbin lib man share share/man; do
 done
 
 # Point EDITOR at vim, or failing that, vi.
-unalias vi vim view 2>/dev/null
 unset EDITOR
-if (which vim >/dev/null 2>&1) then
-  alias vi='vim '
-  alias view='vim -R '
-fi
-[ -z "$EDITOR" ] && which vi >/dev/null 2>&1 && export EDITOR=$(which vi)
+[ -f /usr/bin/vim ] && export EDITOR=/usr/bin/vim
+[ -z "$EDITOR" -a -f /usr/bin/vi ] && export EDITOR=/usr/bin/vi
 
 # Point PAGER at less, or failing that, more.
 unset PAGER
-which less >/dev/null 2>&1 && export PAGER=$(which less)
-[ -z "$PAGER" ] && which more >/dev/null 2>&1 && export PAGER=$(which more)
+[ -f /usr/bin/less ] && export PAGER=/usr/bin/less
+[ -z "$PAGER" -a -f /usr/bin/more ] && export PAGER=/usr/bin/more
 
 # Make sure rsync uses ssh for communication with other hosts.
 unset RSYNC_RSH
-if which ssh >/dev/null ; then
-  export RSYNC_RSH=`which ssh`
-fi
+[ -f /usr/bin/ssh ] && export RSYNC_RSH=/usr/bin/ssh
 
 # prepend_path(path[,pathlist])
 # Prepend path (if it is a directory) to pathlist. If pathlist is not given,
