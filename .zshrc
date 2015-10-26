@@ -68,5 +68,12 @@ function ML {
 }
 export -f ML >/dev/null
 
+# Usage: svn-modified [args to "svn status"]
+# This just runs "svn status $@" and filters the output with "grep -v '^\?'".
+function svn-status {
+  svn status $@ | grep -v '^\?'
+}
+export -f svn-status >/dev/null
+
 # Run our epilog, if available.
 [ -f ~/.rc-epilog ] && source ~/.rc-epilog
