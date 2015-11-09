@@ -25,7 +25,7 @@ windowtitle() {
 
 # Before each prompt, show the host name in the terminal window's title bar.
 precmd() {
-  mname=`print -Pn %M|sed -Ee 's/(\.gatech\.edu|\.local)$//' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
+  mname=`print -Pn %M|sed -Ee 's/(\.gatech\.edu|\.local)$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
   windowtitle "%n@$mname"
 }
 
