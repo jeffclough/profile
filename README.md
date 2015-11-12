@@ -88,3 +88,8 @@ The *-prolog and *-epilog files are sourced, if they exist, from the start and
 end, respectively, of the corresponding profile files. This supports
 machine-specific behavior without having a lot of conditional logic for that
 purpose in the "standard" profile files.
+
+---
+
+There's also a .vimrc file in this repository, since this is also handy to take
+with me and troublesome to recreate from scratch.
