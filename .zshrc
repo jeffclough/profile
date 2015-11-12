@@ -3,7 +3,7 @@ fn="$HOME/.rc-prolog"
 if [ -f "$fn" ]; then
   debug "Sourcing $fn"
   source "$fn"
-  error "Finished $fn"
+  debug "Finished $fn"
 fi
 
 # Some general ZShell settings.
@@ -30,7 +30,7 @@ windowtitle() {
 
 # Before each prompt, show the host name in the terminal window's title bar.
 precmd() {
-  mname=`print -Pn %M|sed -Ee 's/(\.gatech\.edu|\.local)$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
+  mname=`print -Pn %M|sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
   windowtitle "%n@$mname"
 }
 
@@ -58,8 +58,8 @@ alias lld='ll -d'
 alias lrt='ll -rt'
 alias lrtail='lrt|tail '
 
-alias vi='/usr/bin/vim '
-alias view='/usr/bin/vim -R '
+alias vi="$(which vim) "
+alias view="$(which vim) -R "
 
 # Use MD to colorize diff output.
 alias MD='mark -Idiff'
@@ -80,10 +80,19 @@ function svn-status {
 }
 export -f svn-status >/dev/null
 
+# Point EDITOR at vim, or failing that, vi.
+export EDITOR=$(which vim)
+[ -z "$EDITOR" -o ! -f ] && export EDITOR=$(which vi)
+
+# Point PAGER at less, or failing that, more.
+unset PAGER
+[ -f /usr/bin/less ] && export PAGER=/usr/bin/less
+[ -z "$PAGER" -a -f /usr/bin/more ] && export PAGER=/usr/bin/more
+
 # Run our epilog, if available.
 fn="$HOME/.rc-epilog"
 if [ -f "$fn" ]; then
   debug "Sourcing $fn"
   source "$fn"
-  error "Finished $fn"
+  debug "Finished $fn"
 fi

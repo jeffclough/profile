@@ -25,17 +25,18 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab
 
+" Set up a formatlistpat that recognizes bullets as well as numbers. (I'm
+" using 'silent' here because it looks not all builds of vim recognize
+" formatlistpat, so this keeps those builds from complaining about it.)
+silent set formatlistpat "^\s*\d\+[\]:.)}\t ]\s*"
+
 " See http://vimdoc.sourceforge.net/htmldoc/change.html#fo-table for
 " formattingoptions options.
-
-" Prevent auto-continuation of comments after hitting [Enter] in insert mode
-" or o or O in normal mode. Also keep text from automatically (dynamically)
-" re-wrapping the current paragraph every time it is modified.
-set formatoptions-=roa
-
-" Enable autowrap using textwidth in both regular text and comments, and allow
-" the formatting of comments with gq.
-set formatoptions+=tcq
+"
+" Enable reformatting paragraphs in both regular text and comments.
+" Enble recognition of numbered lists when reformatting.
+" Disable everything else.
+set formatoptions=tcqn
 
 " Prevent J and gq from double spacing after a period.
 set nojoinspaces

@@ -3,7 +3,7 @@ fn="$HOME/.profile-prolog"
 if [ -f "$fn" ]; then
   debug "Sourcing $fn"
   source "$fn"
-  error "Finished $fn"
+  debug "Finished $fn"
 fi
 
 # pip zsh completion start. (This corrects a bug in the default implementation.)
@@ -23,5 +23,5 @@ fn="$HOME/.profile-epilog"
 if [ -f "$fn" ]; then
   debug "Sourcing $fn"
   source "$fn"
-  error "Finished $fn"
+  debug "Finished $fn"
 fi

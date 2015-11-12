@@ -69,7 +69,7 @@ fn="$HOME/.env-prolog"
 if [ -f "$fn" ]; then
   debug "Sourcing $fn"
   source "$fn"
-  error "Finished $fn"
+  debug "Finished $fn"
 fi
 
 # In support of platform dependence ...
@@ -118,16 +118,6 @@ for branch in bin sbin lib man share share/man; do
     chmod 755 "$d"
   fi
 done
-
-# Point EDITOR at vim, or failing that, vi.
-unset EDITOR
-[ -f /usr/bin/vim ] && export EDITOR=/usr/bin/vim
-[ -z "$EDITOR" -a -f /usr/bin/vi ] && export EDITOR=/usr/bin/vi
-
-# Point PAGER at less, or failing that, more.
-unset PAGER
-[ -f /usr/bin/less ] && export PAGER=/usr/bin/less
-[ -z "$PAGER" -a -f /usr/bin/more ] && export PAGER=/usr/bin/more
 
 # Make sure rsync uses ssh for communication with other hosts.
 unset RSYNC_RSH
