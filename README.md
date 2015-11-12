@@ -91,5 +91,5 @@ purpose in the "standard" profile files.
 
 ---
 
-There's also a .vimrc file in this repository, since this is also handy to take
+There's also a .vimrc file in this project, since this is also handy to take
 with me and troublesome to recreate from scratch.

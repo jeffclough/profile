@@ -14,8 +14,10 @@ export CLICOLOR=1
 export LSCOLORS=GxFxCxDxBxegedabagaced
 setopt appendhistory
 bindkey -v
-autoload -Uz compinit
-compinit
+if [[ "$osname" != "SunOS" ]] then
+  autoload -Uz compinit
+  compinit
+fi
 
 # Set the title of the emulator window.
 windowtitle() {
@@ -29,10 +31,17 @@ windowtitle() {
 }
 
 # Before each prompt, show the host name in the terminal window's title bar.
-precmd() {
-  mname=`print -Pn %M|sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
-  windowtitle "%n@$mname"
-}
+if [[ "$osname" == "SunOS" ]] then
+  precmd() {
+    mname=$(/bin/hostname | sed -e 's/.gatech\.edu//' -e 's/^lawn-.*/GTmactop/')
+    windowtitle "%n@$mname"
+  }
+else
+  precmd() {
+    mname=`print -Pn %M|sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
+    windowtitle "%n@$mname"
+  }
+fi
 
 # Set our prompt according to our effective uid.
 setopt PROMPT_SUBST
