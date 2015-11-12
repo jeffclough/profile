@@ -29,13 +29,13 @@ set expandtab
 " formattingoptions options.
 
 " Prevent auto-continuation of comments after hitting [Enter] in insert mode
-" or o or O in normal mode.
-set formatoptions-=ro
+" or o or O in normal mode. Also keep text from automatically (dynamically)
+" re-wrapping the current paragraph every time it is modified.
+set formatoptions-=roa
 
 " Enable autowrap using textwidth in both regular text and comments, and allow
-" the formatting of comments with gq. Wrap text automatically in recognized
-" comments.
-set formatoptions+=tcqa
+" the formatting of comments with gq.
+set formatoptions+=tcq
 
 " Prevent J and gq from double spacing after a period.
 set nojoinspaces
