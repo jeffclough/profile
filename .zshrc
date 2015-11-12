@@ -1,5 +1,10 @@
 # Run our prolog, if available.
-[ -f ~/.rc-prolog ] && source ~/.rc-prolog
+fn="$HOME/.rc-prolog"
+if [ -f "$fn" ]; then
+  debug "Sourcing $fn"
+  source "$fn"
+  error "Finished $fn"
+fi
 
 # Some general ZShell settings.
 HISTFILE=~/.histfile
@@ -64,7 +69,7 @@ alias MD='mark -Idiff'
 function ML {
   local OPT=''
   [ $# -gt 0 ] && OPT="--keep $1"
-  mark $OPT 'E(RROR)?:.*' 'I(NFO)?:.*' 'W(ARN(ING)?)?:.*' 'D(EBUG)?:.*' 'N(OTICE)?:.*'
+  mark $(echo $OPT) 'E(RROR)?:.*' 'I(NFO)?:.*' 'W(ARN(ING)?)?:.*' 'D(EBUG)?:.*' 'N(OTICE)?:.*'
 }
 export -f ML >/dev/null
 
@@ -76,4 +81,9 @@ function svn-status {
 export -f svn-status >/dev/null
 
 # Run our epilog, if available.
-[ -f ~/.rc-epilog ] && source ~/.rc-epilog
+fn="$HOME/.rc-epilog"
+if [ -f "$fn" ]; then
+  debug "Sourcing $fn"
+  source "$fn"
+  error "Finished $fn"
+fi

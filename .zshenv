@@ -1,5 +1,76 @@
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# 
+# Set up basic output functions here so that they're available from EVERYWHERE.
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+fg_black=30
+fg_red=31
+fg_green=32
+fg_yellow=33
+fg_blue=34
+fg_magenta=35
+fg_cyan=36
+fg_white=37
+bg_black=40
+bg_red=41
+bg_green=42
+bg_yellow=43
+bg_blue=44
+bg_magenta=45
+bg_cyan=46
+bg_white=47
+
+colorNorm="0"
+colorDebug="1;$bg_black;$fg_blue"
+colorInfo="1;$bg_black;$fg_green"
+colorNotice="$bg_black;$fg_cyan"
+colorWarning="$bg_black;$fg_yellow"
+colorError="$bg_black;$fg_red"
+
+debug() {
+  [ -n "$SCRIPT_DEBUG" ] && echo -e "\e[${colorDebug}mD: $@\e[${colorNorm}m"
+}
+export -f debug >/dev/null
+
+info() {
+  [ -n "$SCRIPT_INFO" ] && echo -e "\e[${colorInfo}mI: $@\e[${colorNorm}m"
+}
+export -f info >/dev/null
+
+notice() {
+  [ -n "$SCRIPT_NOTICE" ] && echo -e "\e[${colorNotice}mN: $@\e[${colorNorm}m"
+}
+export -f notice >/dev/null
+
+warning() {
+  [ -n "$SCRIPT_WARNING" ] && echo -e "\e[${colorWarning}mW: $@\e[${colorNorm}m"
+}
+export -f warning >/dev/null
+
+error() {
+  [ -n "$SCRIPT_ERRORS" ] && echo -e "\e[${colorError}mE: $@\e[${colorNorm}m"
+}
+export -f error >/dev/null
+
+#SCRIPT_DEBUG='yes'
+SCRIPT_INFO='yes'
+SCRIPT_NOTICE='yes'
+SCRIPT_WARNING='yes'
+SCRIPT_ERRORS='yes'
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+#
+# Here begins the real profile work.
+#
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
 # Run our prolog, if available.
-[ -f ~/.env-prolog ] && source ~/.env-prolog
+fn="$HOME/.env-prolog"
+if [ -f "$fn" ]; then
+  debug "Sourcing $fn"
+  source "$fn"
+  error "Finished $fn"
+fi
 
 # In support of platform dependence ...
 osname=$(uname -s)
@@ -89,17 +160,25 @@ prepend_path() {
 }   
 
 # prepend_paths(app_path)
-# Prepend $app_path/(bin|sbin) to PATH.
-# Prepend $app_path/lib to LD_LIBRARY_PATH.
-# Prepend $app_path/(man|share/man) to MANPATH.
+#   Prepend $app_path/(bin|sbin) to PATH.
+#   Prepend $app_path/lib to LD_LIBRARY_PATH.
+#   Prepend $app_path/(lib/python|lib) to PYTHONPATH.
+#   Prepend $app_path/(man|share/man) to MANPATH.
 prepend_paths() {
   dir="$1"
   dir="${dir//\/\///}"
+
   PATH=$(prepend_path "$dir/bin")
   PATH=$(prepend_path "$dir/sbin")
   export PATH
+
   LD_LIBRARY_PATH=$(prepend_path "$dir/lib" "$LD_LIBRARY_PATH")
   export LD_LIBRARY_PATH
+
+  PYTHONPATH=$(prepend_path "$dir/lib" "$PYTHONPATH")
+  PYTHONPATH=$(prepend_path "$dir/lib/python" "$PYTHONPATH")
+  export PYTHONPATH
+
   MANPATH=$(prepend_path "$dir/man" "$MANPATH")
   MANPATH=$(prepend_path "$dir/share/man" "$MANPATH")
   export MANPATH
@@ -111,7 +190,11 @@ for p in / /usr /opt/local /sw /usr/local /usr/local/mysql /opt/subversion /usr/
 do
   prepend_paths "$p"
 done
-export PYTHONPATH=`prepend_path "$HOME/my/lib/python" "$PYTHONPATH"`
 
 # Run our epilog, if available.
-[ -f ~/.env-epilog ] && source ~/.env-epilog
+fn="$HOME/.env-epilog"
+if [ -f "$fn" ]; then
+  debug "Sourcing $fn"
+  source "$fn"
+  debug "Finished $fn"
+fi

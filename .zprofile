@@ -1,5 +1,10 @@
 # Run our prolog, if available.
-[ -f ~/.profile-prolog ] && source ~/.profile-prolog
+fn="$HOME/.profile-prolog"
+if [ -f "$fn" ]; then
+  debug "Sourcing $fn"
+  source "$fn"
+  error "Finished $fn"
+fi
 
 # pip zsh completion start. (This corrects a bug in the default implementation.)
 function _pip_completion {
@@ -14,4 +19,9 @@ compctl -K _pip_completion pip
 # pip zsh completion end
 
 # Run our epilog, if available.
-[ -f ~/.profile-epilog ] && source ~/.profile-epilog
+fn="$HOME/.profile-epilog"
+if [ -f "$fn" ]; then
+  debug "Sourcing $fn"
+  source "$fn"
+  error "Finished $fn"
+fi
