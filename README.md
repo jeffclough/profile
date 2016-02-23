@@ -66,7 +66,7 @@ command history options, command aliases, and window title management here.
 
 - `windowtitle`
 - `precmd`
-- `ML`
+- `ML [RE_to_grep_for]`
 
 ###Aliases:
 
