@@ -39,6 +39,7 @@ usual bin, sbin, lib, man, and share direcories.
 
 - `prepend_path`
 - `prepend_paths`
+- `realpath`
 
 ##.zprofile (and .profile-prolog and .profile-epilog)
 Zshell sources .zprofile after .zshenv and before .zshrc. Other than that, it's

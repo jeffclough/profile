@@ -45,11 +45,13 @@ if [[ "$osname" == "SunOS" ]] then
   precmd() {
     mname=$(/bin/hostname | sed -e 's/.gatech\.edu//' -e 's/^lawn-.*/GTmactop/')
     windowtitle "%n@$mname"
+    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$USERNAME@$mname"
   }
 else
   precmd() {
     mname=`print -Pn %M|sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
     windowtitle "%n@$mname"
+    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$USERNAME@$mname"
   }
 fi
 
@@ -62,7 +64,6 @@ else
   # Root gets a yellow prompt. Others get a green one.
   PS1=$'%{\e[0;%(#.33.32)m%}$mname:%~%#%{\e[0m%} '
 fi
-[ -n "$iTermShellIntegration" ] && iterm2_set_user_var host "$mname"
 export PS1
 
 # Turn on timelog's color features.
