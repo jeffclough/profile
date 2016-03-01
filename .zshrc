@@ -45,13 +45,13 @@ if [[ "$osname" == "SunOS" ]] then
   precmd() {
     mname=$(/bin/hostname | sed -e 's/.gatech\.edu//' -e 's/^lawn-.*/GTmactop/')
     windowtitle "%n@$mname"
-    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$USERNAME@$mname"
+    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
   }
 else
   precmd() {
     mname=`print -Pn %M|sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
     windowtitle "%n@$mname"
-    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$USERNAME@$mname"
+    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
   }
 fi
 
