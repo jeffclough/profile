@@ -58,6 +58,15 @@ SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
 SCRIPT_ERRORS='yes'
 
+# usage: realpath PATH
+# Returns the absolute, canonical, no-symlinks path to PATH.
+realpath() {
+  python <<EOF
+import os.path
+print os.path.realpath("$1")
+EOF
+}
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
 # Here begins the real profile work.

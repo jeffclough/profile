@@ -1,3 +1,13 @@
+# BEFORE sourcing any .rc-prolog code for this interactive session,
+# enable iTerm's shell integration.
+fn="$(dirname "$(realpath "$HOME/.zshrc")")/.iterm2_shell_integration.zsh"
+if [ -f "$fn" ]; then
+  debug "Sourcing $fn"
+  source "$fn"
+  debug "Finished $fn"
+fi
+[ -n "${functions[iterm2_set_user_var]}" ] && export iTermShellIntegration=YES
+
 # Run our prolog, if available.
 fn="$HOME/.rc-prolog"
 if [ -f "$fn" ]; then
@@ -52,6 +62,7 @@ else
   # Root gets a yellow prompt. Others get a green one.
   PS1=$'%{\e[0;%(#.33.32)m%}$mname:%~%#%{\e[0m%} '
 fi
+[ -n "$iTermShellIntegration" ] && iterm2_set_user_var host "$mname"
 export PS1
 
 # Turn on timelog's color features.
