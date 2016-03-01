@@ -47,9 +47,15 @@ if [[ "$osname" == "SunOS" ]] then
     windowtitle "%n@$mname"
     [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
   }
-else
+elif [[ "$osname" == "Darwin" ]] then
   precmd() {
-    mname=`print -Pn %M|sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
+    mname=`print -Pn %M|sed -Ee 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
+    windowtitle "%n@$mname"
+    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
+  }
+else # Assume a tolerably modern Linux of some kind.
+  precmd() {
+    mname=`print -Pn %M|sed -re 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
     windowtitle "%n@$mname"
     [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
   }
