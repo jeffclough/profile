@@ -40,30 +40,31 @@ windowtitle() {
   esac
 }
 
+# Set the title of the emulator tab.
+tabtitle() {
+  [[ -t 1 ]] || return
+  case $TERM in
+  vt220|*xterm*|ansi|rxvt|(dt|k|E)term) print -Pn "\e]1;$1\a"
+    ;;
+  esac
+}
+
+# Get the name of the current host and cook it a bit.
+get_host_name() {
+  /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'
+}
+
 # Before each prompt, show the host name in the terminal window's title bar.
-if [[ "$osname" == "SunOS" ]] then
-  precmd() {
-    mname=$(/bin/hostname | sed -e 's/.gatech\.edu//' -e 's/^lawn-.*/GTmactop/')
-    windowtitle "%n@$mname"
-    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
-  }
-elif [[ "$osname" == "Darwin" ]] then
-  precmd() {
-    mname=`print -Pn %M|sed -Ee 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
-    windowtitle "%n@$mname"
-    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
-  }
-else # Assume a tolerably modern Linux of some kind.
-  precmd() {
-    mname=`print -Pn %M|sed -re 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^(ipsec|lawn)-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
-    windowtitle "%n@$mname"
-    [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
-  }
-fi
+precmd() {
+  mname=$(get_host_name)
+  windowtitle "%n@$mname"
+  tabtitle "$mname"
+  [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
+}
 
 # Set our prompt according to our effective uid.
 setopt PROMPT_SUBST
-mname=`print -Pn %m|sed -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'`
+mname=$(get_host_name)
 if [[ `uname -s` = "AIX" ]]; then
   PS1="%d%# "
 else
