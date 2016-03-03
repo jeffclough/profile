@@ -57,7 +57,7 @@ get_host_name() {
 # Identify the network we're on.
 get_network_name() {
   if [[ "$osname" == "Darwin" ]]; then
-    /bin/hostname | sed -e 's/^ipsec-.*/vpn/' -e 's/^lawn-.*/lawn/' -e 's/.*\.local$//'
+    /bin/hostname | sed -e 's/^ipsec-.*/vpn/' -e 's/^lawn-.*/lawn/' -e 's/.*\.local$//' -e 's/.*\.gatech\.edu$//'
   fi
 }
 
