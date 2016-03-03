@@ -54,12 +54,34 @@ get_host_name() {
   /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'
 }
 
+# Identify the network we're on.
+get_network_name() {
+  if [[ "$osname" == "Darwin" ]]; then
+    /bin/hostname | sed -e 's/^ipsec-.*/vpn/' -e 's/^lawn-.*/lawn/' -e 's/.*\.local$//'
+  fi
+}
+
+real_ip_time=0
+get_real_ip() {
+  local t
+  if [[ "$osname" == "Darwin" ]]; then
+    t=$(now -c)
+    if [[ $(( t - real_ip_time )) -gt 10 ]] then
+      real_ip=$(curl -s ipchicken.com | pygrep -f '{}' '(^\d+\.\d+\.\d+\.\d+)')
+      real_ip_time=$t
+    fi
+  fi
+  echo $real_ip
+}
+
 # Before each prompt, show the host name in the terminal window's title bar.
 precmd() {
   mname=$(get_host_name)
+  #ip=$(get_real_ip)
+  my_network=$(get_network_name)
   windowtitle "%n@$mname"
   tabtitle "$mname"
-  [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname")"
+  [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
 }
 
 # Set our prompt according to our effective uid.
