@@ -12,13 +12,17 @@ is where I set up the environment I want *everything* to run in. Particularly,
 this is where the architechure-specific logic is.
 
 The architecture awareness is based on information from uname and culminates in
-the value of the ARCHOS environment varaible. I called it ARCHOS because it
-combines architecture and OS information. Happy accident: It's also Latin for
-**ruler** (*noun* a person exercising government or dominion). I use it to hold
-the name of the directory with architecture-specific file (e.g.
-`/Users/jclough/my/archos/Darwin_14.3_x86_64`), which comes in handy when
-building projects across disparate hosts. Under the $ARCHOS directory are the
-usual bin, sbin, lib, man, and share direcories.
+the value of the ARCHOS environment varaible.
+
+    I called it ARCHOS because it combines architecture and OS information.
+    Happy accident: It's also Latin for **ruler** (*noun* a person exercising
+    government or dominion).
+
+I use it to hold the name of the directory for architecture-specific files
+(e.g. `/Users/jclough/my/archos/Darwin_14.3_x86_64`), which comes in handy when
+sharing filespace among disparate hosts and building architecture dependent
+projects. Under the $ARCHOS directory are the usual bin, sbin, lib, man, and
+share direcories.
 
 ### Environment Variables
 

@@ -109,7 +109,7 @@ else
 fi
 
 # Make a place for architecture/OS dependent files, because home directories
-# might be portable.
+# might be shared among machines with architectural differences.
 ARCHOS="$HOME"
 rt_env_type="${osname}${oskernel:+_$oskernel}${architecture:+_$architecture}"
 for part in my archos "$rt_env_type"; do
