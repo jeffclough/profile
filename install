@@ -1,0 +1,48 @@
+#!/bin/zsh
+
+# Output the canonical, no-symlinks path to the given filename or directory.
+# usage: realpath FILENAME
+realpath() {
+  python <<EOF
+import os.path
+print os.path.realpath("$1")
+EOF
+}
+
+# Insist that the given commands are on the PATH.
+# usage: require COMMAND ...
+require() {
+  while [[ -n "$1" ]]; do
+    if ! which $1 &>/dev/null; then
+      echo "$1 command not found. Aborting installation."
+      exit
+    fi
+    shift
+  done
+}
+
+# Insist that the ts command be available.
+require ts
+
+# Install the given script as a symlink.
+# usage: install_link SCRIPT_FILE
+install_link() {
+  # If this file is already installed, there's nothing to do.
+  if [[ "$(realpath $HOME/$1)" == "$instpath/.zprofile" ]]; then
+    return
+  fi
+
+  # Timestamp any existing version of this script.
+  echo ts ~/$1 2>/dev/null
+
+  # Create a symlink of this script in the home directory.
+  echo ln "-s" "$instpath/$1" "$HOME/$1"
+}
+
+# Get the actual directory this script is running from.
+instpath="$(dirname "$(realpath "$0")")"
+
+# Install symlinks to our new profile scripts.
+install_link .zprofile
+install_link .zshenv
+install_link .zshrc
