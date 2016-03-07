@@ -28,7 +28,8 @@ set expandtab
 " Set up a formatlistpat that recognizes bullets as well as numbers. (I'm
 " using 'silent' here because it looks not all builds of vim recognize
 " formatlistpat, so this keeps those builds from complaining about it.)
-silent set formatlistpat "^\s*\d\+[\]:.)}\t ]\s*"
+"silent set formatlistpat "^\s*\d\+[\]:.)}\t ]\s*"
+set formatlistpat=^\\s*\\d\\+\\.\\s\\+\\\\|^\\s*<\\d\\+>\\s\\+\\\\|^\\s*[a-zA-Z.]\\.\\s\\+\\\\|^\\s*[ivxIVX]\\+\\.\\s\\+
 
 " See http://vimdoc.sourceforge.net/htmldoc/change.html#fo-table for
 " formattingoptions options.
