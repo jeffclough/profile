@@ -51,7 +51,7 @@ tabtitle() {
 
 # Get the name of the current host and cook it a bit.
 get_host_name() {
-  /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'
+  /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/.*\.bluehost\.com$/bluehost.com/' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'
 }
 
 # Identify the network we're on.
