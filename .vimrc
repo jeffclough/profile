@@ -24,6 +24,11 @@ set tabstop=8
 set softtabstop=2
 set shiftwidth=2
 set expandtab
+" Show hard tabs, but only in Python files.
+set listchars=tab:»·
+autocmd Filetype python set list
+
+"	This text follows a tab character.
 
 " Set up a formatlistpat that recognizes bullets as well as numbers. (I'm
 " using 'silent' here because it looks not all builds of vim recognize
