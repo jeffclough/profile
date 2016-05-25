@@ -1,6 +1,8 @@
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
-fn="$(dirname "$(realpath "$HOME/.zshrc")")/.iterm2_shell_integration.zsh"
+#fn="$(dirname "$(realpath "$HOME/.zshrc")")/.iterm2_shell_integration.zsh"
+fn="$HOME/.iterm2_shell_integration.zsh"
+debug "fn=$fn"
 if [ -f "$fn" ]; then
   debug "Sourcing $fn"
   source "$fn"
