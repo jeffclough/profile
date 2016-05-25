@@ -66,6 +66,7 @@ import os.path
 print os.path.realpath("$1")
 EOF
 }
+export -f realpath >/dev/null
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
