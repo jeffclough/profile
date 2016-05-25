@@ -97,3 +97,10 @@ purpose in the "standard" profile files.
 
 There's also a .vimrc file in this project, since this is also handy to take
 with me and troublesome to recreate from scratch.
+
+
+##iTerm2 and its Shell Integration
+This project supports iTerm2's shell integration. If needed, those scripts
+can be installed with the following command:
+
+  `curl -L https://iterm2.com/misc/install_shell_integration_and_utilities.sh | bash`
