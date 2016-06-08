@@ -58,6 +58,18 @@ SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
 SCRIPT_ERRORS='yes'
 
+# Usage:
+#   date [OPTION]... [+FORMAT]
+#   date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
+#
+# This is just like the "standard" date command, but the default format is:
+#   %Y-%m-%d %H:%M:%S
+#
+date() {
+  /bin/date "${@:-+%Y-%m-%d %H:%M:%S}"
+}
+export -f date >/dev/null
+
 # usage: realpath PATH
 # Returns the absolute, canonical, no-symlinks path to PATH.
 realpath() {
