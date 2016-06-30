@@ -22,6 +22,7 @@ require() {
 }
 
 # Insist that the ts command be available.
+export PATH=$HOME/my/bin:$PATH
 require ts
 
 # Install the given script as a symlink.
