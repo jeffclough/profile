@@ -100,7 +100,7 @@ if [[ "$osname" == "Darwin" ]]; then
   # This is a Mac OS X machine.
   oskernel=$(uname -r|cut -d. -f-2)
   architecture=$(uname -m)
-  osrelease=$(defaults read loginwindow SystemVersionStampAsString|cut -d. -f-2)
+  osrelease=$(sw_vers -productVersion|cut -d. -f-2)
 else 
   # Treat this is (more or less) straight Unix (whatever that is).
   oskernel=$(uname -r|cut -d. -f-2)
