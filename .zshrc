@@ -102,7 +102,7 @@ export TIMELOG=-c
 
 alias less='less -R '
 
-alias ls='ls -F'
+alias ls='ls --color=auto'
 alias la='ls -a'
 alias ll='ls -l'
 alias lla='ll -a'
