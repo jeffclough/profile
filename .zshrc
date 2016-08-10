@@ -23,7 +23,12 @@ HISTFILE=~/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 export CLICOLOR=1
-export LSCOLORS=GxFxCxDxBxegedabagaced
+# Good ls colors for dark terminal backgrounds:
+export LSCOLORS=gxfxcxdxbxegbdabafacge
+export LS_COLORS='di=36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=31;43:su=30;41:sg=30;45:tw=30;42:ow=36;44'
+# Good ls colors for light terminal backgrounds:
+#export LSCOLORS=exfxcxdxbxeghdhbafhcge
+#export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=37;43:su=37;41:sg=30;45:tw=37;42:ow=36;44'
 setopt appendhistory
 bindkey -v
 if [[ "$osname" != "SunOS" ]] then
