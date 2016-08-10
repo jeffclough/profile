@@ -102,7 +102,13 @@ export TIMELOG=-c
 
 alias less='less -R '
 
-alias ls='ls --color=auto'
+if [[ "$osname" == 'SunOS' ]]; then
+  alias ls='ls -F'
+elif [[ "$osname" == 'Darwin' ]]; then
+  alias ls='ls -G'
+else
+  alias ls='ls --color=auto'
+fi
 alias la='ls -a'
 alias ll='ls -l'
 alias lla='ll -a'
