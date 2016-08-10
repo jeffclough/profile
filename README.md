@@ -28,6 +28,8 @@ direcories. On my Mac, ARCHOS=/Users/jclough/my/archos/Darwin_14.3_x86_64.
 - `ARCHOS`
 - `EDITOR`
 - `LD_LIBRARY_PATH`
+- `LSCOLOR`
+- `LS_COLOR`
 - `MANPATH`
 - `PAGER`
 - `PATH`
