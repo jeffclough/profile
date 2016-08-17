@@ -116,6 +116,7 @@ else
 fi
 alias la='ls -a'
 alias ll='ls -l'
+alias llh='ll -h'
 alias lla='ll -a'
 alias lld='ll -d'
 alias lrt='ll -rt'
