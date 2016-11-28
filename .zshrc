@@ -122,8 +122,8 @@ alias lld='ll -d'
 alias lrt='ll -rt'
 alias lrtail='lrt|tail '
 
-alias vi="$(which vim) "
-alias view="$(which vim) -R "
+alias vi="$(which vim) -u ~/.vimrc "
+alias view="vi -R "
 
 # Use MD to colorize diff output.
 alias MD='mark -Idiff'
