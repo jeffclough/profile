@@ -61,6 +61,7 @@ vnoremap p <Esc>:let current_reg = @"<CR>gvdi<C-R>=current_reg<CR><Esc>
 
 " Vim5 and later versions support syntax highlighting. Uncommenting the next
 " line enables syntax highlighting by default.
+au BufRead,BufNewFile *.go set filetype=go
 syntax on
 set background=dark
 
