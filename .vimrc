@@ -45,6 +45,10 @@ set formatoptions=tcqn
 " Prevent J and gq from double spacing after a period.
 set nojoinspaces
 
+if has("autocmd")
+  au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+endif
+
 autocmd Filetype java   setlocal ts=2 st=2 sw=2 noexpandtab
 autocmd Filetype python setlocal ts=8 st=2 sw=2 expandtab
 
