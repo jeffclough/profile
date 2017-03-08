@@ -75,6 +75,7 @@ command history options, command aliases, and window title management here.
 
 ###Aliases:
 
+- `R='sudo /bin/zsh -c "source ~jclough/z"'` (available under RHEL7)
 - `less='less -R '`
 - `ls='ls -F'`
 - `la='ls -a'`
