@@ -195,10 +195,14 @@ prepend_paths() {
   MANPATH=$(prepend_path "$dir/share/man" "$MANPATH")
   export MANPATH
 }
+
+if [ -x "$HOME/go" ]; then
+  export GOPATH="$HOME/go"
+fi
     
 # Prepend bin, sbin, lib, and man subdirectories (if they exist) of the
 # following paths to the appropriate environment variables' values.
-for p in / /usr /opt/local /sw /usr/local /usr/local/mysql /opt/subversion /usr/local/git "$HOME/my" "$HOME/test"
+for p in / /usr /opt/local /sw /usr/local /usr/local/go /usr/local/mysql /opt/subversion /usr/local/git "$GOPATH" "$HOME/my" "$HOME/test"
 do
   prepend_paths "$p"
 done
