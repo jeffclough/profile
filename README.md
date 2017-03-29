@@ -6,7 +6,7 @@ want bin, sbin, lib, man, and share directories directly in my home directory,
 I gather them all under a ~/my directory. This just helps me to keep my home
 directory a little neater. So I have ~/my/bin, ~/my/sbin, etc.
 
-##.zshenv (and .env-prolog and .env-epilog)
+## .zshenv (and .env-prolog and .env-epilog)
 Zshell sources this file first for all instances (in the absence of -f). This
 is where I set up the environment I want *everything* to run in. Particularly,
 this is where the architechure-specific logic is.
@@ -44,21 +44,21 @@ direcories. On my Mac, ARCHOS=/Users/jclough/my/archos/Darwin_14.3_x86_64.
 - `prepend_paths`
 - `realpath`
 
-##.zprofile (and .profile-prolog and .profile-epilog)
+## .zprofile (and .profile-prolog and .profile-epilog)
 Zshell sources .zprofile after .zshenv and before .zshrc. Other than that, it's
 just like .zlogin (which I don't actually use). At the moment, I'm only using
 .zprofile to correct an svn-related command completion bug in the stock
 distributeion of Zshell.
 
-###Shell functions:
+### Shell functions:
 
 - `_pip_completion`
 
-##.zshrc (and .rc-prolog and .rc-epilog)
+## .zshrc (and .rc-prolog and .rc-epilog)
 Zshell sources .zshrc in interactive shells. I set up things like LSCOLORS,
 command history options, command aliases, and window title management here.
 
-###Environment Variables:
+### Environment Variables:
 
 - `HISTFILE`
 - `HISTSIZE`
@@ -67,13 +67,13 @@ command history options, command aliases, and window title management here.
 - `LSCOLORS`
 - `LS_COLORS`
 
-###Shell functions:
+### Shell functions:
 
 - `windowtitle`
 - `precmd`
 - `ML [RE_to_grep_for]`
 
-###Aliases:
+### Aliases:
 
 - `R='sudo /bin/zsh -c "source ~jclough/z"'` (available under RHEL7)
 - `less='less -R '`
@@ -103,7 +103,7 @@ There's also a .vimrc file in this project, since this is also handy to take
 with me and troublesome to recreate from scratch.
 
 
-##iTerm2 and its Shell Integration
+## iTerm2 and its Shell Integration
 This project supports iTerm2's shell integration. If needed, those scripts
 can be installed with the following command:
 
