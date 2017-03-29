@@ -87,6 +87,8 @@ command history options, command aliases, and window title management here.
 - `MD='mark -Idiff'`
 - `vi='/usr/bin/vim '`
 - `view='/usr/bin/vim -R '`
+- `R='sudo /bin/zsh -c "source ~$USER/z"'`
+- `pt='ps -H'`
 
 ---
 
