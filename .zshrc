@@ -121,9 +121,10 @@ alias lla='ll -a'
 alias lld='ll -d'
 alias lrt='ll -rt'
 alias lrtail='lrt|tail '
-if [[ "$osrelease" == "rhel7" ]]; then
-  alias R='sudo /bin/zsh -c "source ~jclough/z"'
-fi
+
+alias R='sudo /bin/zsh -c "source ~$USER/z"'
+
+alias pt='ps -H'
 
 alias vi="$(which vim) -u ~/.vimrc "
 alias view="vi -R "
