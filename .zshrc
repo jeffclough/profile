@@ -19,7 +19,8 @@ if [ -f "$fn" ]; then
 fi
 
 # Some general ZShell settings.
-HISTFILE=~/.histfile
+#HISTFILE=~/.histfile
+HISTFILE=~$(id -nu)/.histfile
 HISTSIZE=1000
 SAVEHIST=1000
 export CLICOLOR=1
