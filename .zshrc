@@ -94,12 +94,17 @@ precmd() {
 
 # Set our prompt according to our effective uid.
 setopt PROMPT_SUBST
+# Root's prompt color defaults to yellow.
+export ROOT_PROMPT_COLOR=${ROOT_PROMPT_COLOR:-33}
+# User's prompt color defaults to green.
+export USER_PROMPT_COLOR=${USER_PROMPT_COLOR:-32}
 mname=$(get_host_name)
 if [[ `uname -s` = "AIX" ]]; then
   PS1="%d%# "
 else
-  # Root gets a yellow prompt. Others get a green one.
-  PS1=$'%{\e[0;%(#.33.32)m%}$mname:%~%#%{\e[0m%} '
+  # Set the prompt content and color. Use the ROOT_PROMPT_COLOR and
+  # USER_PROMPT_COLOR varaibles for the colors.
+  PS1=$'%{\e[0;%(#.'"$ROOT_PROMPT_COLOR.$USER_PROMPT_COLOR"$')m%}$mname:%~%#%{\e[0m%} '
 fi
 export PS1
 
