@@ -1,6 +1,6 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 
-# Set up basic output functions here so that they're available from EVERYWHERE.
+# Set up basic output functions here so that they're available EVERYWHERE.
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 fg_black=30
