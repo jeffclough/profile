@@ -40,7 +40,7 @@ get_host_name() {
 #   Expire duplicate commands first when trimming the histfile.
 #   All sessions share history in realtime (implies incremental appending).
 #
-HISTFILE=~$(id -nu)/.histfile
+HISTFILE=~/.histfile
 if df $HOME | cut -d' ' -f1 | grep : >>/dev/null; then
   HISTFILE=$HISTFILE.$(get_host_name)
   setopt histfcntllock
