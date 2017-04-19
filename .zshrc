@@ -27,15 +27,25 @@ export LS_COLORS='di=36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=31;43:su=30;41:sg=30
 #export LSCOLORS=exfxcxdxbxeghdhbafhcge
 #export LS_COLORS='di=34:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=37;43:su=37;41:sg=30;45:tw=37;42:ow=36;44'
 
+# Get the name of the current host and cook it a bit.
+get_host_name() {
+  /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/.*\.bluehost\.com$/bluehost.com/' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'
+}
+
 #
 # Set up command history:
-#   Use fcntl locking on the histfile because we're NFS mounting $HOME.
-#   Append new commands to history.
+#   If $HOME is mounted from a networked volume,
+#       append HISTFILE with the name of the current host, and
+#       use fcntl locking on $HISTFILE.
 #   Expire duplicate commands first when trimming the histfile.
-#   All sessions share history in realtime.
+#   All sessions share history in realtime (implies incremental appending).
 #
-setopt histfcntllock appendhistory histexpiredupsfirst sharehistory
 HISTFILE=~$(id -nu)/.histfile
+if df $HOME | cut -d' ' -f1 | grep : >>/dev/null; then
+  HISTFILE=$HISTFILE.$(get_host_name)
+  setopt histfcntllock
+fi
+setopt histexpiredupsfirst sharehistory
 # histexpiredupsfirst needs HISTSIZE > SAVEHIST.
 HISTSIZE=1100
 SAVEHIST=1000
@@ -65,11 +75,6 @@ tabtitle() {
   vt220|*xterm*|ansi|rxvt|(dt|k|E)term) print -Pn "\e]1;$1\a"
     ;;
   esac
-}
-
-# Get the name of the current host and cook it a bit.
-get_host_name() {
-  /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/.*\.bluehost\.com$/bluehost.com/' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'
 }
 
 # Identify the network we're on.
