@@ -18,10 +18,6 @@ if [ -f "$fn" ]; then
   debug "Finished $fn"
 fi
 
-if [ -f ~/.git-completion.zsh ]; then
-  source ~/.git-completion.zsh
-fi
-
 # Some general ZShell settings.
 export CLICOLOR=1
 # Good ls colors for dark terminal backgrounds:
