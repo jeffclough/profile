@@ -18,6 +18,10 @@ if [ -f "$fn" ]; then
   debug "Finished $fn"
 fi
 
+if [ -f ~/.git-completion.zsh ]; then
+  source ~/.git-completion.zsh
+fi
+
 # Some general ZShell settings.
 export CLICOLOR=1
 # Good ls colors for dark terminal backgrounds:
@@ -97,15 +101,27 @@ get_real_ip() {
   echo $real_ip
 }
 
+# If PWD is in a Git repo, return the name of the current branch. Otherwise,
+# return nothing.
+git_branch() {
+  local r
+  r=$(git rev-parse --git-dir 2>>/dev/null)
+  [ -n "$r" ] && basename $(cat $r/HEAD | cut -d' ' -f2)
+}
+
 # Before each prompt, show the host name in the terminal window's title bar.
 precmd() {
+  local branch
   mname=$(get_host_name)
-  #ip=$(get_real_ip)
+  branch=$(git_branch)
+  [ -n "$branch" ] && branch=" (branch: $branch)"
   my_network=$(get_network_name)
-  windowtitle "%n@$mname"
+  windowtitle "%n@$mname$branch"
   tabtitle "$mname"
-  [ -n "$iTermShellIntegration" ] && iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
+  [ -n "$iTermShellIntegration" ] && \
+    iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
 }
+
 
 # Set our prompt according to our effective uid.
 setopt PROMPT_SUBST
