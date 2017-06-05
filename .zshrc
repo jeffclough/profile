@@ -45,7 +45,8 @@ if df $HOME | cut -d' ' -f1 | grep : >>/dev/null; then
   HISTFILE=$HISTFILE.$(get_host_name)
   setopt histfcntllock
 fi
-setopt histexpiredupsfirst sharehistory
+#setopt sharehistory
+setopt histexpiredupsfirst
 # histexpiredupsfirst needs HISTSIZE > SAVEHIST.
 HISTSIZE=1100
 SAVEHIST=1000
