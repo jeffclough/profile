@@ -171,7 +171,7 @@ alias MD='mark -Idiff'
 function ML {
   local OPT=''
   [ $# -gt 0 ] && OPT="--keep $1"
-  mark -i $(echo $OPT) '(FATAL:.*)|(E(RROR)?:.*)|(.*\bRED\b.* )' '(L(OG)?:.*)|(I(NFO)?:.*)|(.*\bGREEN\b.*)' '(W(ARN(ING)?)?:.*)|(.*\bYELLOW\b.*)' 'D(EBUG|ETAIL)?:.*' 'N(OTICE)?:.*'
+  mark -i $(echo $OPT) '(\bFATAL:.*)|(\bE(RROR)?:.*)|(.*\bRED\b.* )' '(\bL(OG)?:.*)|(\bI(NFO)?:.*)|(.*\bGREEN\b.*)' '(\bW(ARN(ING)?)?:.*)|(.*\bYELLOW\b.*)' '\bD(EBUG|ETAIL)?:.*' '\bN(OTICE)?:.*'
 }
 export -f ML >/dev/null
 
