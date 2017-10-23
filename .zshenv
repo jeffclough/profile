@@ -27,28 +27,44 @@ colorNotice="$bg_black;$fg_cyan"
 colorWarning="$bg_black;$fg_yellow"
 colorError="$bg_black;$fg_red"
 
+# Usage: echo_tc ANSI_COLOR_NUMBER text ...
+#
+# The text will be prefixed with a timestamp and colored according to the first
+# argument's ANSI value formatted as "[[attr;]background;]foreground". The text
+# will only be colored if standard output is going to a terminal.
+
+echo_tc() {
+  local c="$1";shift
+  if [ -t 1 ]; then
+    echo -e "$(date) \e[${c}m$@\e[${colorNorm}m"
+  else
+    echo -e "$(date) $@"
+  fi
+}
+export -f echo_tc >/dev/null
+
 debug() {
-  [ -n "$SCRIPT_DEBUG" ] && echo -e "\e[${colorDebug}mD: $@\e[${colorNorm}m"
+  [ -n "$SCRIPT_DEBUG" ] && echo_tc "$colorDebug" D: $@
 }
 export -f debug >/dev/null
 
 info() {
-  [ -n "$SCRIPT_INFO" ] && echo -e "\e[${colorInfo}mI: $@\e[${colorNorm}m"
+  [ -n "$SCRIPT_INFO" ] && echo_tc "$colorInfo" I: $@
 }
 export -f info >/dev/null
 
 notice() {
-  [ -n "$SCRIPT_NOTICE" ] && echo -e "\e[${colorNotice}mN: $@\e[${colorNorm}m"
+  [ -n "$SCRIPT_NOTICE" ] && echo_tc "$colorNotice" N: $@
 }
 export -f notice >/dev/null
 
 warning() {
-  [ -n "$SCRIPT_WARNING" ] && echo -e "\e[${colorWarning}mW: $@\e[${colorNorm}m"
+  [ -n "$SCRIPT_WARNING" ] && echo_tc "${colorWarning}" W: $@
 }
 export -f warning >/dev/null
 
 error() {
-  [ -n "$SCRIPT_ERRORS" ] && echo -e "\e[${colorError}mE: $@\e[${colorNorm}m"
+  [ -n "$SCRIPT_ERRORS" ] && echo_tc "${colorError}" E: $@
 }
 export -f error >/dev/null
 
