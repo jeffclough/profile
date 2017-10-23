@@ -21,11 +21,11 @@ bg_cyan=46
 bg_white=47
 
 colorNorm="0"
-colorDebug="1;$bg_black;$fg_blue"
+colorDebug="$bg_blue;$fb_white"
 colorInfo="1;$bg_black;$fg_green"
-colorNotice="$bg_black;$fg_cyan"
-colorWarning="$bg_black;$fg_yellow"
-colorError="$bg_black;$fg_red"
+colorNotice="1;$bg_black;$fg_cyan"
+colorWarning="1;$bg_black;$fg_yellow"
+colorError="1;$bg_black;$fg_red"
 
 # Usage: echo_tc ANSI_COLOR_NUMBER text ...
 #
@@ -36,7 +36,7 @@ colorError="$bg_black;$fg_red"
 echo_tc() {
   local c="$1";shift
   if [ -t 1 ]; then
-    echo -e "$(date) \e[${c}m$@\e[${colorNorm}m"
+    echo -e "\e[${c}m$(date) $@\e[${colorNorm}m"
   else
     echo -e "$(date) $@"
   fi
