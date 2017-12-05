@@ -166,6 +166,10 @@ alias view="vi -R "
 # Use MD to colorize diff output.
 alias MD='mark -Idiff'
 
+# Set up a couple of docker aliases.
+which docker-machine >/dev/null && alias dm=$(which docker-machine)
+which docker-compose >/dev/null && alias dc=$(which docker-compose)
+
 # Usage: ML [RE]
 # The optional regular expression limits output to matching lines.
 function ML {
