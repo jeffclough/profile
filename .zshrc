@@ -168,7 +168,10 @@ alias MD='mark -Idiff'
 
 # Set up a couple of docker aliases.
 which docker-machine >/dev/null && alias dm=$(which docker-machine)
-which docker-compose >/dev/null && alias dc=$(which docker-compose)
+if which docker >/dev/null; then
+  alias dc='docker container '
+  alias di='docker image '
+fi
 
 # Usage: ML [RE]
 # The optional regular expression limits output to matching lines.
