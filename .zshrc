@@ -175,6 +175,10 @@ function ML {
 }
 export -f ML >/dev/null
 
+function words {
+  grep -i "^$1$" /usr/share/dict/words
+}
+
 # Usage: svn-modified [args to "svn status"]
 # This just runs "svn status $@" and filters the output with "grep -v '^\?'".
 function svn-status {
