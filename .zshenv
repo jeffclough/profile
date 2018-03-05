@@ -126,16 +126,63 @@ else
     architecture=$(uname -m)
   fi
   osrelease=''
-  x=/etc/redhat-release
-  if [[ "$osname" == "Linux" && -f "$x" ]]; then
-    # It must be Red Hat.
+  if [[ "$osname" == "Linux" ]]; then
     unset y
-    grep -q 'Red Hat Enterprise Linux' $x && y='rhel'
-    osrelease="$y$(grep -Po '(?<=release )\d+' $x)"
-    # Keep Redhat's sadistically crafted /etc/zlogout from running.
-    setopt noglobalrcs
+    # Check for Red Hat.
+    for x in /etc/redhat-release /etc/os-release; do
+      if [[ -f "$x" ]]; then
+        if grep -q 'Red Hat Enterprise Linux' $x; then
+          y='rhel'
+          osrelease="$y$(grep -Po '(?<=release )\d+' $x)"
+          # Keep Redhat's sadistically crafted /etc/zlogout from running.
+          setopt noglobalrcs
+        elif grep -q 'Amazon Linux AMI' $x; then
+          osrelease="$(grep -Po '(?<=^ID=")[a-z]+' $x)$(grep -Po '(?<=^VERSION_ID=")\d+\.\d+' $x)"
+          # AMI inherited RHEL's evil /etc/zlogout.
+          setopt noglobalrcs
+        fi
+      fi
+    done
   fi
 fi
+
+archos() {
+  # Get our command line options.
+  O=`getopt -o hnrka -- "$@"`
+  if [ $? != 0 ]; then return 1; fi
+  eval set -- "$O"
+
+  # Process any options found.
+  if [ $# -gt 1 ]; then
+    local -a output
+    while [[ ${1:0:1} == - ]] do
+      [[ $1 == -- ]] && {shift;break};
+      [[ $1 == -h ]] && {
+        cat <<EOF
+usage: archos [OPTOINS]
+
+OPTIONS:
+    -h  This message.
+    -n  Write the OS name.
+    -r  Write the OS release.
+    -k  Write the kernel version.
+    -a  Write the CPU architecture.
+EOF
+        return 0
+      };
+      [[ $1 == -n ]] && {output+=("$osname");shift;continue};
+      [[ $1 == -r ]] && {output+=("$osrelease");shift;continue};
+      [[ $1 == -k ]] && {output+=("$oskernel");shift;continue};
+      [[ $1 == -a ]] && {output+=("$architecture");shift;continue};
+      output+="$1"
+      shift
+    done
+    echo $output
+  else
+    # If there were no options given, output everything.
+    echo "$osname $osrelease $oskernel $architecture"
+  fi
+}
 
 # Make a place for architecture/OS dependent files, because home directories
 # might be shared among machines with architectural differences.
@@ -148,7 +195,7 @@ for part in my archos "$rt_env_type"; do
     chmod 755 "$ARCHOS"
   fi
 done
-export ARCHOS # Things like "make" will need access to this variable.
+export ARCHOS
 for branch in bin sbin lib man share share/man; do
   d="$ARCHOS/$branch"
   if [ ! -d "$d" ]; then
@@ -156,6 +203,9 @@ for branch in bin sbin lib man share share/man; do
     chmod 755 "$d"
   fi
 done
+# $ARCHOS is now where this platform's binaries should go. So things like
+#     ./configure --prefix "$ARCHOS"
+# ought to be the norm when preparing to build binaries.
 
 # Make sure rsync uses ssh for communication with other hosts.
 unset RSYNC_RSH

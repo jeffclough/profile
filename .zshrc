@@ -167,8 +167,8 @@ alias view="vi -R "
 alias MD='mark -Idiff'
 
 # Set up a couple of docker aliases.
-which docker-machine >/dev/null && alias dm=$(which docker-machine)
-if which docker >/dev/null; then
+which docker-machine >/dev/null 2>&1 && alias dm=$(which docker-machine)
+if which docker >/dev/null 2>&1; then
   alias dc='docker container'
   alias di='docker image'
 fi
