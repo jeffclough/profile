@@ -156,6 +156,11 @@ alias lld='ll -d'
 alias lrt='ll -rt'
 alias lrtail='lrt|tail '
 
+alias cgrep='grep --color'
+alias cegrep='egrep --color'
+alias pgrep='grep -P'
+alias cpgrep='pgrep --color'
+
 alias R='sudo /bin/zsh -c "source ~$USER/z"'
 
 alias pt='ps -H'
@@ -195,7 +200,7 @@ export EDITOR=$(which vim)
 
 # Point PAGER at less, or failing that, more.
 unset PAGER
-[ -f /usr/bin/less ] && export PAGER=/usr/bin/less
+[ -f /usr/bin/less ] && export PAGER="/usr/bin/less -R"
 [ -z "$PAGER" -a -f /usr/bin/more ] && export PAGER=/usr/bin/more
 
 # Run our epilog, if available.
