@@ -13,3 +13,5 @@ alias lrtail='lrt|tail '
 alias run-help=man
 alias vi='/usr/bin/vim '
 alias view='/usr/bin/vim -R '
+
+[ -f /srv/setenv ] && . /srv/setenv
