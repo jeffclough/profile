@@ -161,7 +161,7 @@ alias cegrep='egrep --color'
 alias pgrep='grep -P'
 alias cpgrep='pgrep --color'
 
-alias R='sudo /bin/zsh -c "source ~$USER/z"'
+alias R='sudo /bin/zsh -c "source ${HOME}/z" '
 
 alias pt='ps -H'
 
