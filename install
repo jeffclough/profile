@@ -56,4 +56,5 @@ install_link .zprofile
 install_link .zshenv
 install_link .zshrc
 install_link .vimrc
+install_link .bashrc
 echo "Installed!"
