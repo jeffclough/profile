@@ -13,4 +13,7 @@ alias lrtail='lrt|tail '
 alias vi="$(which vim) "
 alias view='vi -R '
 
+export EDITOR=$(which vim)
+export PAGER="$(which less) -R"
+
 [ -f /srv/setenv ] && . /srv/setenv
