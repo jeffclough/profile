@@ -1,0 +1,5 @@
+-- See https://www.postgresql.org/docs/9.2/static/app-psql.html for help.
+
+\set QUIET 1
+\set PROMPT1 '%[%033[35m%]%n@%m/%~%#%[%033[0m%] '
+\set PROMPT2 '%[%033[35m%]%n@%m/%~%R%[%033[0m%] '

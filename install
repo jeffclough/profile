@@ -57,4 +57,5 @@ install_link .zshenv
 install_link .zshrc
 install_link .vimrc
 install_link .bashrc
+install_link .psqlrc
 echo "Installed!"
