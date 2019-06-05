@@ -29,7 +29,7 @@ export LS_COLORS='di=36:ln=35:so=32:pi=33:ex=31:bd=34;46:cd=31;43:su=30;41:sg=30
 
 # Get the name of the current host and cook it a bit.
 get_host_name() {
-  /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/.*\.bluehost\.com$/bluehost.com/' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/'
+  /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/.*\.bluehost\.com$/bluehost.com/' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/' -e 's/^coda-.*/GTmactop/'
 }
 
 #
@@ -118,7 +118,6 @@ precmd() {
   [ -n "$iTermShellIntegration" ] && \
     iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
 }
-
 
 # Set our prompt according to our effective uid.
 setopt PROMPT_SUBST
