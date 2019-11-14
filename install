@@ -9,6 +9,31 @@ print os.path.realpath("$1")
 EOF
 }
 
+# Returns 0 if the given file is an ordinary file (and not a symlink).
+# usage: isregularfile FILENAME
+isregularfile() {
+  [ -f "$1" -a ! -h "$1" ]
+}
+
+inode() {
+  if [ -e "$1" ]; then
+    ls -i "$1" | cut -d' ' -f1
+  else
+    echo 0
+  fi
+}
+
+realinode() {
+  inode "$(realpath "$1")"
+}
+
+# Return 0 (true) iff the two filenames refer to the same filesystem object.
+# No error is given if either file doesn't exist. samefile just returns false.
+# usage: samefile FILE1 FILE2
+samefile() {
+  [ -e "$(realpath "$1")" ] && [ $(realinode "$1") -eq $(realinode "$2") ]
+}
+
 # Insist that the given commands are on the PATH.
 # usage: require COMMAND ...
 require() {
@@ -28,20 +53,24 @@ require ts
 # Install the given script as a symlink.
 # usage: install_link SCRIPT_FILE
 install_link() {
-  homefile="$(realpath "$HOME/$1")"
-  homefile="${homefile#$HOME/}"
-  target="$instpath/$1"
-  target="${target#$HOME/}"
-  # If this file is already installed, there's nothing to do.
-  if [[ "$homefile" == "$target" ]]; then
+  realfile="$instpath/$1"
+  realfile="${realfile#$HOME/}"
+  link="$(realpath "$HOME")/$1"
+
+  # Rename any existing version of this script where the link will be. Suffix
+  # the filename with a timestamp, and show the user what we're doing.
+  if isregularfile "$link"; then
+    ts "$link"
+  fi
+
+  # If this symlink already exists, there's nothing to do.
+  if samefile "$link" "$realfile"; then
+    echo "$link already points to $realfile"
     return
   fi
 
-  # Timestamp any existing version of this script.
-  ts "$homefile" 2>/dev/null
-
   # Create a symlink of this script in the home directory.
-  ln "-s" "$target" "$homefile"
+  ln -sf "$realfile" "$link"
 }
 
 # Get the actual directory this script is running from.
@@ -56,6 +85,7 @@ install_link .zprofile
 install_link .zshenv
 install_link .zshrc
 install_link .vimrc
+install_link .bash_profile
 install_link .bashrc
 install_link .psqlrc
 echo "Installed!"

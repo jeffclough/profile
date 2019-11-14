@@ -1,3 +1,8 @@
+# If bash (<shudder/>) is sourcing this script, remember that and play nice.
+if [[ "$0" =~ "bash$" ]]; then
+  export SHELL=$(which bash)
+fi
+
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 
 # Set up basic output functions here so that they're available EVERYWHERE.
@@ -64,7 +69,7 @@ warning() {
 export -f warning >/dev/null
 
 error() {
-  [ -n "$SCRIPT_ERRORS" ] && echo_tc "${colorError}" E: $@
+  [ -n "$SCRIPT_ERROR" ] && echo_tc "${colorError}" E: $@
 }
 export -f error >/dev/null
 
@@ -72,7 +77,7 @@ export -f error >/dev/null
 SCRIPT_INFO='yes'
 SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
-SCRIPT_ERRORS='yes'
+SCRIPT_ERROR='yes'
 
 # Usage:
 #   date [OPTION]... [+FORMAT]
@@ -135,11 +140,11 @@ else
           y='rhel'
           osrelease="$y$(grep -Po '(?<=release )\d+' $x)"
           # Keep Redhat's sadistically crafted /etc/zlogout from running.
-          setopt noglobalrcs
+          [[ $SHELL =~ "zsh$" ]] && setopt noglobalrcs
         elif grep -q 'Amazon Linux AMI' $x; then
           osrelease="$(grep -Po '(?<=^ID=")[a-z]+' $x)$(grep -Po '(?<=^VERSION_ID=")\d+\.\d+' $x)"
           # AMI inherited RHEL's evil /etc/zlogout.
-          setopt noglobalrcs
+          [[ $SHELL =~ "zsh$" ]] && setopt noglobalrcs
         fi
       fi
     done
@@ -155,7 +160,7 @@ archos() {
   # Process any options found.
   if [ $# -gt 1 ]; then
     local -a output
-    while [[ ${1:0:1} == - ]] do
+    while [[ ${1:0:1} == - ]]; do
       [[ $1 == -- ]] && {shift;break};
       [[ $1 == -h ]] && {
         cat <<EOF
@@ -170,10 +175,10 @@ OPTIONS:
 EOF
         return 0
       };
-      [[ $1 == -n ]] && {output+=("$osname");shift;continue};
-      [[ $1 == -r ]] && {output+=("$osrelease");shift;continue};
-      [[ $1 == -k ]] && {output+=("$oskernel");shift;continue};
-      [[ $1 == -a ]] && {output+=("$architecture");shift;continue};
+      [[ $1 == -n ]] && {output+="$osname";shift;continue};
+      [[ $1 == -r ]] && {output+="$osrelease";shift;continue};
+      [[ $1 == -k ]] && {output+="$oskernel";shift;continue};
+      [[ $1 == -a ]] && {output+="$architecture";shift;continue};
       output+="$1"
       shift
     done
@@ -280,3 +285,6 @@ if [ -f "$fn" ]; then
   source "$fn"
   debug "Finished $fn"
 fi
+
+test -e "${HOME}/.iterm2_shell_integration.bash" && source "${HOME}/.iterm2_shell_integration.bash"
+

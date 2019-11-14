@@ -1,3 +1,10 @@
+# If bash (<shudder/>) is sourcing this script, remember that and play nice.
+if [[ "$0" =~ "bash$" ]]; then
+  if [[ ! "$SHELL" =~ "bash$" ]]; then
+    . ~/.bash_profile
+  fi
+fi
+
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
 #fn="$(dirname "$(realpath "$HOME/.zshrc")")/.iterm2_shell_integration.zsh"
@@ -18,7 +25,7 @@ if [ -f "$fn" ]; then
   debug "Finished $fn"
 fi
 
-# Some general ZShell settings.
+# Some general shell settings.
 export CLICOLOR=1
 # Good ls colors for dark terminal backgrounds:
 export LSCOLORS=gxfxcxdxbxegbdabafacge
@@ -53,7 +60,7 @@ SAVEHIST=1000
 
 # Set up command line editing.
 bindkey -v
-if [[ "$osname" != "SunOS" ]] then
+if [[ "$osname" != "SunOS" ]]; then
   autoload -Uz compinit
   compinit
 fi
@@ -90,7 +97,7 @@ get_real_ip() {
   local t
   if [[ "$osname" == "Darwin" ]]; then
     t=$(now -c)
-    if [[ $(( t - real_ip_time )) -gt 10 ]] then
+    if [[ $(( t - real_ip_time )) -gt 10 ]]; then
       real_ip=$(curl -s ipchicken.com | pygrep -f '{}' '(^\d+\.\d+\.\d+\.\d+)')
       real_ip_time=$t
     fi
@@ -187,7 +194,7 @@ function ML {
 export -f ML >/dev/null
 
 function words {
-  grep -i "^$1$" /usr/share/dict/words
+  egrep -i "^$1$" /usr/share/dict/words
 }
 
 # Usage: svn-modified [args to "svn status"]
