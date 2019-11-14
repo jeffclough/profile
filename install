@@ -64,12 +64,10 @@ install_link() {
   fi
 
   # If this symlink already exists, there's nothing to do.
-  if samefile "$link" "$realfile"; then
-    echo "$link already points to $realfile"
-    return
-  fi
+  samefile "$link" "$realfile" && return
 
   # Create a symlink of this script in the home directory.
+  echo "$link --> $realfile"
   ln -sf "$realfile" "$link"
 }
 
