@@ -167,6 +167,12 @@ alias cegrep='egrep --color'
 alias pgrep='grep -P'
 alias cpgrep='pgrep --color'
 
+if which python3 >/dev/null; then
+  alias venv='python3 -m venv '
+else
+  alias venv='echo "Install Python 3!" >&2; echo "" >/dev/null'
+fi
+
 alias R='sudo /bin/zsh -c "source ${HOME}/z" '
 
 alias pt='ps -H'
