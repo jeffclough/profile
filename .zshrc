@@ -124,6 +124,8 @@ precmd() {
   tabtitle "$mname"
   [ -n "$iTermShellIntegration" ] && \
     iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
+  # Not prompt-related, but keep our session from timing out.
+  unset TMOUT
 }
 
 # Set our prompt according to our effective uid.
