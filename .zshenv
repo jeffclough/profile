@@ -96,7 +96,7 @@ export -f date >/dev/null
 realpath() {
   python <<EOF
 import os.path
-print os.path.realpath("$1")
+print(os.path.realpath("$@"))
 EOF
 }
 export -f realpath >/dev/null
@@ -140,11 +140,11 @@ else
           y='rhel'
           osrelease="$y$(grep -Po '(?<=release )\d+' $x)"
           # Keep Redhat's sadistically crafted /etc/zlogout from running.
-          [[ $SHELL =~ "zsh$" ]] && setopt noglobalrcs
+          [[ "$(realpath "$SHELL")" =~ "zsh$" ]] && setopt noglobalrcs
         elif grep -q 'Amazon Linux AMI' $x; then
           osrelease="$(grep -Po '(?<=^ID=")[a-z]+' $x)$(grep -Po '(?<=^VERSION_ID=")\d+\.\d+' $x)"
           # AMI inherited RHEL's evil /etc/zlogout.
-          [[ $SHELL =~ "zsh$" ]] && setopt noglobalrcs
+          [[ "$(realpath "$SHELL")" =~ "zsh$" ]] && setopt noglobalrcs
         fi
       fi
     done
