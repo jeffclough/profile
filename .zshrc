@@ -7,8 +7,7 @@ fi
 
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
-#fn="$(dirname "$(realpath "$HOME/.zshrc")")/.iterm2_shell_integration.zsh"
-fn="$HOME/.iterm2_shell_integration.zsh"
+fn="$HOME/.iterm2_shell_integration.$(basename "$SHELL")"
 debug "fn=$fn"
 if [ -f "$fn" ]; then
   debug "Sourcing $fn"
@@ -115,7 +114,6 @@ git_branch() {
 
 # Before each prompt, show the host name in the terminal window's title bar.
 precmd() {
-  local branch
   mname=$(get_host_name)
   branch=$(git_branch)
   [ -n "$branch" ] && branch=" (branch: $branch)"
@@ -265,3 +263,4 @@ if [ -f "$fn" ]; then
   source "$fn"
   debug "Finished $fn"
 fi
+unset fn # So we don't polute our new shell.
