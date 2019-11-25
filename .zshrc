@@ -169,7 +169,7 @@ alias cegrep='egrep --color'
 alias pgrep='grep -P'
 alias cpgrep='pgrep --color'
 
-if which python3 2>/dev/null; then
+if which python3 >/dev/null 2>&1; then
   alias venv='python3 -m venv '
 else
   alias venv='echo "Install Python 3!" >&2; echo "" >/dev/null'

@@ -258,9 +258,9 @@ prepend_paths() {
   LD_LIBRARY_PATH=$(prepend_path "$dir/lib" "$LD_LIBRARY_PATH")
   export LD_LIBRARY_PATH
 
-  PYTHONPATH=$(prepend_path "$dir/lib" "$PYTHONPATH")
-  PYTHONPATH=$(prepend_path "$dir/lib/python" "$PYTHONPATH")
-  export PYTHONPATH
+  #PYTHONPATH=$(prepend_path "$dir/lib" "$PYTHONPATH")
+  #PYTHONPATH=$(prepend_path "$dir/lib/python" "$PYTHONPATH")
+  #export PYTHONPATH
 
   MANPATH=$(prepend_path "$dir/man" "$MANPATH")
   MANPATH=$(prepend_path "$dir/share/man" "$MANPATH")
@@ -277,6 +277,9 @@ for p in / /usr /opt/local /sw /usr/local /usr/local/go /usr/local/mysql /opt/su
 do
   prepend_paths "$p"
 done
+PYTHONPATH=$(prepend_path "$HOME/my/lib/python" "$PYTHONPATH")
+PYTHONPATH=$(prepend_path "$HOME/my/lib/python2" "$PYTHONPATH")
+export PYTHONPATH
 
 # Run our epilog, if available.
 fn="$HOME/.env-epilog"
