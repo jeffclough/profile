@@ -120,7 +120,7 @@ precmd() {
   branch=$(git_branch)
   [ -n "$branch" ] && branch=" (branch: $branch)"
   my_network=$(get_network_name)
-  windowtitle "%n@$mname$branch"
+  windowtitle "%n@$mname\[$$\] $branch"
   tabtitle "$mname"
   [ -n "$iTermShellIntegration" ] && \
     iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
@@ -191,6 +191,43 @@ if which docker >/dev/null 2>&1; then
   alias dc='docker container'
   alias di='docker image'
 fi
+
+# Usage: list_functions [-a | --all]
+# List all shell functions. Under zsh, "internal" functions (those starting
+# with _) are hidden by default. Use -a or --all to show them as well. Under
+# bash, all functions are shows regardless of command line options.
+list_functions() {
+  # Handle the command line.
+  local INTERNAL='^_'
+  while [ $# -gt 0 ]; do
+    case "$1" in
+      -(-all|a))
+        INTERNAL='ZS9Jp99Xc3fEq5'
+        shift
+        ;;
+      *)
+        echo "list_functions: Bad argument: \"$1\"" >&2
+        return 1
+    esac
+  done
+  # This works differently for each  shell.
+  case $(realpath "$SHELL") in
+    *bash)
+      declare -f
+      ;;
+    *zsh)
+      for f in $(print -l ${(ok)functions} | grep -v "$INTERNAL"); do
+        echo
+        which $f
+      done
+      ;;
+    *)
+      echo "Can't get \"all functions\" for shell $SHELL." >&2
+      return 1
+  esac
+  return 0
+}
+export -f list_function >/dev/null
 
 # Usage: ML [RE]
 # The optional regular expression limits output to matching lines.
