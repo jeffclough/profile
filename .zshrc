@@ -194,8 +194,8 @@ fi
 
 # Usage: list_functions [-a | --all]
 # List all shell functions. Under zsh, "internal" functions (those starting
-# with _) are hidden by default. Use -a or --all to show them as well. Under
-# bash, all functions are shows regardless of command line options.
+# with _) are hidden by default. Use -a or --all to show them. Under bash, all
+# functions are shown regardless of command line options.
 list_functions() {
   # Handle the command line.
   local INTERNAL='^_'
