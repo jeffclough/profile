@@ -284,6 +284,12 @@ PYTHONPATH=$(prepend_path "$HOME/my/lib/python" "$PYTHONPATH")
 PYTHONPATH=$(prepend_path "$HOME/my/lib/python2" "$PYTHONPATH")
 export PYTHONPATH
 
+# We set up our python2 alias very early in this script because it might be
+# needed that early, but we revisit that here (after setting up our PATH) in
+# case things have changed.
+unalias python2 2>/dev/null
+which python2 >/dev/null 2>&1 || alias python2='python '
+
 # Run our epilog, if available.
 fn="$HOME/.env-epilog"
 if [ -f "$fn" ]; then
