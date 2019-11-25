@@ -24,7 +24,28 @@ direcories. On my Mac, ARCHOS=/Users/jclough/my/archos/Darwin_14.3_x86_64.
 
 
 ### Environment Variables
-
+- `fg_black=30`
+- `fg_red=31`
+- `fg_green=32`
+- `fg_yellow=33`
+- `fg_blue=34`
+- `fg_magenta=35`
+- `fg_cyan=36`
+- `fg_white=37`
+- `bg_black=40`
+- `bg_red=41`
+- `bg_green=42`
+- `bg_yellow=43`
+- `bg_blue=44`
+- `bg_magenta=45`
+- `bg_cyan=46`
+- `bg_white=47`
+- `colorNorm="0"`
+- `colorDebug="$bg_blue;$fb_white"`
+- `colorInfo="1;$bg_black;$fg_green"`
+- `colorNotice="1;$bg_black;$fg_cyan"`
+- `colorWarning="1;$bg_black;$fg_yellow"`
+- `colorError="1;$bg_black;$fg_red
 - `ARCHOS`
 - `EDITOR`
 - `LD_LIBRARY_PATH`
@@ -40,9 +61,17 @@ direcories. On my Mac, ARCHOS=/Users/jclough/my/archos/Darwin_14.3_x86_64.
 
 ### Shell functions
 
+- `archos [-hnrka]` Outputs the OS name (-n), OS release (-r), kernel version (-k), and/or architecture (-a) we're running under.
+- `date [ARGS]` Output the current date formatted as "+%Y-%m-%d %H:%M:%S" _UNLESS_ there are any command line argumnents, in which case this is just like the regular `date` command.
+- `debug TEXT ...` Outputs a timestamp and message in the colorDebug color if SCRIPT_DEBUG is not empty.
+- `echo_tc COLOR_CODE TEXT ...` Outputs text in using the ANSI color code. See `error`, `warning`, and `info` for examples.
+- `error TEXT ...` Outputs a timestamp and message in the colorError color if SCRIPT_ERROR is not empty.
+- `info TEXT ...` Outputs a timestamp and message in the colorInfo color if SCRIPT_INFO is not empty.
+- `notice TEXT ...` Outputs a timestamp and message in the colorNotice color if SCRIPT_NOTICE is not empty.
 - `prepend_path`
 - `prepend_paths`
 - `realpath`
+- `warning TEXT ...` Outputs a timestamp and message in the colorWarning color if SCRIPT_WARNING is not empty.
 
 ## .zprofile (and .profile-prolog and .profile-epilog)
 Zshell sources .zprofile after .zshenv and before .zshrc. Other than that, it's
@@ -69,9 +98,10 @@ command history options, command aliases, and window title management here.
 
 ### Shell functions:
 
-- `windowtitle`
-- `precmd`
-- `ML [RE_to_grep_for]`
+- `tabtitle TEXT` Set the title of the current session tab. (Requires iTerm2 integration)
+- `windowtitle TEXT` Set the title of the current terminal window. (Requires iTerm2 integration)
+- `precmd` Manages the shell prompt, and if iTerm2 integration is enabled, set the terminal tab text and window title.
+- `ML [RE_to_grep_for] FILE` Colors (and optionally filters) log output from the given file.
 
 ### Aliases:
 
@@ -99,9 +129,9 @@ purpose in the "standard" profile files.
 
 ---
 
-There's also a .vimrc file in this project, since this is also handy to take
-with me and troublesome to recreate from scratch.
-
+There are also **.inputrc** (to turn on vi editing for readline-based input) and
+**.vimrc** (to bend vim to my capricious will) files in this project. They're
+handy to take with me and troublesome to recreate from scratch.
 
 ## iTerm2 and its Shell Integration
 This project supports iTerm2's shell integration. If needed, those scripts
