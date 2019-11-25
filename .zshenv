@@ -79,6 +79,9 @@ SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
 SCRIPT_ERROR='yes'
 
+# If we're on a system where there's no python2, try just using python.
+which python2 >/dev/null 2>&1 || alias python2='python '
+
 # Usage:
 #   date [OPTION]... [+FORMAT]
 #   date [-u|--utc|--universal] [MMDDhhmm[[CC]YY][.ss]]
@@ -94,7 +97,7 @@ export -f date >/dev/null
 # usage: realpath PATH
 # Returns the absolute, canonical, no-symlinks path to PATH.
 realpath() {
-  python <<EOF
+  python2 <<EOF
 import os.path
 print(os.path.realpath("$@"))
 EOF
