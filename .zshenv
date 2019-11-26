@@ -1,7 +1,10 @@
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
-if [[ "$0" =~ "bash$" ]]; then
+#echo ".zshenv: \$0='$0'"
+#echo ".zshenv: \$SHELL='$SHELL' (before)"
+if (echo "$0" | grep -q "bash$"); then
   export SHELL=$(which bash)
 fi
+#echo ".zshenv: \$SHELL='$SHELL' (after)"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 
@@ -143,11 +146,12 @@ else
           y='rhel'
           osrelease="$y$(grep -Po '(?<=release )\d+' $x)"
           # Keep Redhat's sadistically crafted /etc/zlogout from running.
-          [[ "$(realpath "$SHELL")" =~ "zsh$" ]] && setopt noglobalrcs
+          #[[ "$(realpath "$SHELL")" =~ "zsh$" ]] && setopt noglobalrcs
+          (realpath "$SHELL" | grep -q "zsh$") && setopt noglobalrcs
         elif grep -q 'Amazon Linux AMI' $x; then
           osrelease="$(grep -Po '(?<=^ID=")[a-z]+' $x)$(grep -Po '(?<=^VERSION_ID=")\d+\.\d+' $x)"
           # AMI inherited RHEL's evil /etc/zlogout.
-          [[ "$(realpath "$SHELL")" =~ "zsh$" ]] && setopt noglobalrcs
+          (realpath "$SHELL" | grep -q "zsh$") && setopt noglobalrcs
         fi
       fi
     done

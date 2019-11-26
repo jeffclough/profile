@@ -1,9 +1,14 @@
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
-if [[ "$0" =~ "bash$" ]]; then
-  if [[ ! "$SHELL" =~ "bash$" ]]; then
-    . ~/.bash_profile
-  fi
-fi
+#if (echo "$0" | grep -qv "bash$"); then
+#  if (echo "$SHELL" | grep -qv "bash$"); then
+#    . ~/.bash_profile
+#  fi
+#fi
+
+#echo ".zshrc: \$0='$0'"
+#echo ".zshrc: SHELL='$SHELL' (before)"
+(echo "$SHELL" | grep -q "bash$") && . ~/.bash_profile
+#echo ".zshrc: SHELL='$SHELL' (after)"
 
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
