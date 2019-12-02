@@ -1,9 +1,22 @@
+# usage: realpath PATH
+# Returns the absolute, canonical, no-symlinks path to PATH.
+realpath() {
+  python2 <<EOF
+import os.path
+print(os.path.realpath("$@"))
+EOF
+}
+export -f realpath >/dev/null
+
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
 #echo "D: .zshenv: \$0='$0'"
 #echo "D: .zshenv: \$SHELL='$SHELL' (before)"
+# Resolve any sym-linking nonsense that might be going on with our shell.
+SHELL=$(realpath "$SHELL")
 if [[ "${0##*/}" == "bash" ]]; then
-  export SHELL=$(which bash)
+  SHELL=$(which bash)
 fi
+export SHELL
 #echo "D: .zshenv: \$SHELL='$SHELL' (after)"
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
@@ -96,16 +109,6 @@ date() {
   /bin/date "${@:-+%Y-%m-%d %H:%M:%S}"
 }
 export -f date >/dev/null
-
-# usage: realpath PATH
-# Returns the absolute, canonical, no-symlinks path to PATH.
-realpath() {
-  python2 <<EOF
-import os.path
-print(os.path.realpath("$@"))
-EOF
-}
-export -f realpath >/dev/null
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
