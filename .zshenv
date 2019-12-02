@@ -1,7 +1,7 @@
 # usage: realpath PATH
 # Returns the absolute, canonical, no-symlinks path to PATH.
 realpath() {
-  python2 <<EOF
+  python <<EOF
 import os.path
 print(os.path.realpath("$@"))
 EOF
