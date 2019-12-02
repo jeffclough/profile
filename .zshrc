@@ -5,10 +5,10 @@
 #  fi
 #fi
 
-#echo ".zshrc: \$0='$0'"
-#echo ".zshrc: SHELL='$SHELL' (before)"
-(echo "$SHELL" | grep -q "bash$") && . ~/.bash_profile
-#echo ".zshrc: SHELL='$SHELL' (after)"
+#echo "D: .zshrc: \$0='$0'"
+#echo "D: .zshrc: \$SHELL='$SHELL' (before)"
+[[ "${0##*/}" == "bash" ]] && . ~/.bash_profile
+#echo "D: .zshrc: \$SHELL='$SHELL' (after)"
 
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
@@ -43,6 +43,8 @@ get_host_name() {
   /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/.*\.bluehost\.com$/bluehost.com/' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/' -e 's/^coda-.*/GTmactop/'
 }
 
+export -f get_host_name >/dev/null
+
 #
 # Set up command history:
 #   If $HOME is mounted from a networked volume,
@@ -52,21 +54,27 @@ get_host_name() {
 #   All sessions share history in realtime (implies incremental appending).
 #
 HISTFILE=~/.histfile
-if df $HOME | cut -d' ' -f1 | grep : >>/dev/null; then
-  HISTFILE=$HISTFILE.$(get_host_name)
-  setopt histfcntllock
+if [[ "${SHELL##*/}" == "zsh" ]]; then # This stuff is specific to zsh.
+  if df $HOME | cut -d' ' -f1 | grep : >>/dev/null; then
+    HISTFILE=$HISTFILE.$(get_host_name)
+    setopt histfcntllock
+  fi
+  #setopt sharehistory
+  setopt histexpiredupsfirst
+  # histexpiredupsfirst needs HISTSIZE > SAVEHIST.
+  HISTSIZE=1100
+  SAVEHIST=1000
 fi
-#setopt sharehistory
-setopt histexpiredupsfirst
-# histexpiredupsfirst needs HISTSIZE > SAVEHIST.
-HISTSIZE=1100
-SAVEHIST=1000
 
-# Set up command line editing.
-bindkey -v
-if [[ "$osname" != "SunOS" ]]; then
-  autoload -Uz compinit
-  compinit
+# Set up command line editing and completion.
+if [[ "${SHELL##*/}" == "zsh" ]]; then
+  bindkey -v
+  if [[ "$osname" != "SunOS" ]]; then
+    autoload -Uz compinit
+    compinit
+  fi
+else
+  set -o vi
 fi
 
 # Set the title of the emulator window.
@@ -75,7 +83,7 @@ windowtitle() {
   case $TERM in
   sun-cmd) print -Pn "\e]l$1\e\\"
     ;;
-  vt220|*xterm*|ansi|rxvt|(dt|k|E)term) print -Pn "\e]2;$1\a"
+  vt220|*xterm*|ansi|rxvt|dtterm|kterm|Eterm) print -Pn "\e]2;$1\a"
     ;;
   esac
 }
@@ -84,7 +92,7 @@ windowtitle() {
 tabtitle() {
   [[ -t 1 ]] || return
   case $TERM in
-  vt220|*xterm*|ansi|rxvt|(dt|k|E)term) print -Pn "\e]1;$1\a"
+  vt220|*xterm*|ansi|rxvt|dtterm|kterm|Eterm) print -Pn "\e]1;$1\a"
     ;;
   esac
 }
@@ -132,18 +140,36 @@ precmd() {
 }
 
 # Set our prompt according to our effective uid.
-setopt PROMPT_SUBST
-# Root's prompt color defaults to yellow.
-export ROOT_PROMPT_COLOR=${ROOT_PROMPT_COLOR:-33}
+#echo "D: .zshrc: \$ROOT_PROMPT_COLOR=$ROOT_PROMPT_COLOR (before)"
+if [[ "${SHELL##*/}" == "zsh" ]]; then
+  # Use zsh's enhanced prompt substitution.
+  setopt PROMPT_SUBST
+  # Root's prompt color defaults to yellow under zsh.
+  export ROOT_PROMPT_COLOR=${ROOT_PROMPT_COLOR:-33}
+else
+  # Root's prompt color defaults to red under lesser shell.
+  export ROOT_PROMPT_COLOR=${ROOT_PROMPT_COLOR:-31}
+fi
+#echo "D: .zshrc: \$ROOT_PROMPT_COLOR=$ROOT_PROMPT_COLOR (after)"
 # User's prompt color defaults to green.
 export USER_PROMPT_COLOR=${USER_PROMPT_COLOR:-32}
+# Let lesser shells know what prompt color to use.
+if [[ "$(id -u)" == "0" ]]; then 
+  export PROMPT_COLOR=$ROOT_PROMPT_COLOR
+else
+  export PROMPT_COLOR=$USER_PROMPT_COLOR
+fi
 mname=$(get_host_name)
 if [[ `uname -s` = "AIX" ]]; then
   PS1="%d%# "
 else
-  # Set the prompt content and color. Use the ROOT_PROMPT_COLOR and
-  # USER_PROMPT_COLOR varaibles for the colors.
-  PS1=$'%{\e[0;%(#.'"$ROOT_PROMPT_COLOR.$USER_PROMPT_COLOR"$')m%}$mname:%~%#%{\e[0m%} '
+  if [[ "${SHELL##*/}" == "zsh" ]]; then
+    # Set the prompt content and color. Use the ROOT_PROMPT_COLOR and
+    # USER_PROMPT_COLOR varaibles for the colors.
+    PS1=$'%{\e[0;%(#.'"$ROOT_PROMPT_COLOR.$USER_PROMPT_COLOR"$')m%}$mname:%~%#%{\e[0m%} '
+  else
+    PS1="\[\e[${PROMPT_COLOR}m\]$(get_host_name):\w\\$\[\e[0m\] "
+  fi
 fi
 export PS1
 
@@ -195,7 +221,7 @@ if which docker >/dev/null 2>&1; then
   alias di='docker image'
 fi
 
-# Usage: list_functions [-a | --all]
+# Usage: list_functions [-a]
 # List all shell functions. Under zsh, "internal" functions (those starting
 # with _) are hidden by default. Use -a or --all to show them. Under bash, all
 # functions are shown regardless of command line options.
@@ -204,7 +230,7 @@ list_functions() {
   local INTERNAL='^_'
   while [ $# -gt 0 ]; do
     case "$1" in
-      -(-all|a))
+      -a)
         INTERNAL='ZS9Jp99Xc3fEq5'
         shift
         ;;
@@ -230,7 +256,7 @@ list_functions() {
   esac
   return 0
 }
-export -f list_function >/dev/null
+export -f list_functions >/dev/null
 
 # Usage: ML [RE]
 # The optional regular expression limits output to matching lines.
@@ -254,7 +280,7 @@ export -f svn-status >/dev/null
 
 # Point EDITOR at vim, or failing that, vi.
 export EDITOR=$(which vim)
-[ -z "$EDITOR" -o ! -f ] && export EDITOR=$(which vi)
+[ -z "$EDITOR" -o ! -f "$EDITOR" ] && export EDITOR=$(which vi)
 
 # Point PAGER at less, or failing that, more.
 unset PAGER
