@@ -131,7 +131,7 @@ precmd() {
   branch=$(git_branch)
   [ -n "$branch" ] && branch=" (branch: $branch)"
   my_network=$(get_network_name)
-  windowtitle "$USER@$mname($$) $branch"
+  windowtitle "$(id -nu)@$mname($$) $branch"
   tabtitle "$mname"
   [ -n "$iTermShellIntegration" ] && \
     iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
