@@ -81,9 +81,9 @@ fi
 windowtitle() {
   [[ -t 1 ]] || return
   case $TERM in
-  sun-cmd) print -Pn "\e]l$1\e\\"
+  sun-cmd) echo -en "\e]l$1\e\\"
     ;;
-  vt220|*xterm*|ansi|rxvt|dtterm|kterm|Eterm) print -Pn "\e]2;$1\a"
+  vt220|*xterm*|ansi|rxvt|dtterm|kterm|Eterm) echo -en "\e]2;$1\a"
     ;;
   esac
 }
@@ -92,7 +92,7 @@ windowtitle() {
 tabtitle() {
   [[ -t 1 ]] || return
   case $TERM in
-  vt220|*xterm*|ansi|rxvt|dtterm|kterm|Eterm) print -Pn "\e]1;$1\a"
+  vt220|*xterm*|ansi|rxvt|dtterm|kterm|Eterm) echo -en "\e]1;$1\a"
     ;;
   esac
 }
@@ -131,7 +131,7 @@ precmd() {
   branch=$(git_branch)
   [ -n "$branch" ] && branch=" (branch: $branch)"
   my_network=$(get_network_name)
-  windowtitle "%n@$mname\[$$\] $branch"
+  windowtitle "$USER@$mname($$) $branch"
   tabtitle "$mname"
   [ -n "$iTermShellIntegration" ] && \
     iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
