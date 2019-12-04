@@ -1,24 +1,3 @@
-# usage: realpath PATH
-# Returns the absolute, canonical, no-symlinks path to PATH.
-realpath() {
-  python <<EOF
-import os.path
-print(os.path.realpath("$@"))
-EOF
-}
-export -f realpath >/dev/null
-
-# If bash (<shudder/>) is sourcing this script, remember that and play nice.
-#echo "D: .zshenv: \$0='$0'"
-#echo "D: .zshenv: \$SHELL='$SHELL' (before)"
-# Resolve any sym-linking nonsense that might be going on with our shell.
-SHELL=$(realpath "$SHELL")
-if [[ "${0##*/}" == "bash" ]]; then
-  SHELL=$(which bash)
-fi
-export SHELL
-#echo "D: .zshenv: \$SHELL='$SHELL' (after)"
-
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 
 # Set up basic output functions here so that they're available EVERYWHERE.
@@ -94,6 +73,27 @@ SCRIPT_INFO='yes'
 SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
 SCRIPT_ERROR='yes'
+
+# usage: realpath PATH
+# Returns the absolute, canonical, no-symlinks path to PATH.
+realpath() {
+  python <<EOF
+import os.path
+print(os.path.realpath("$@"))
+EOF
+}
+export -f realpath >/dev/null
+
+# If bash (<shudder/>) is sourcing this script, remember that and play nice.
+debug ".zshenv: \$0='$0'"
+debug ".zshenv: \$SHELL='$SHELL' (before)"
+# Resolve any sym-linking nonsense that might be going on with our shell.
+SHELL=$(realpath "$SHELL")
+if [[ "${0##*/}" == "bash" ]]; then
+  SHELL=$(which bash)
+fi
+export SHELL
+debug ".zshenv: \$SHELL='$SHELL' (after)"
 
 # If we're on a system where there's no python2, try just using python.
 which python2 >/dev/null 2>&1 || alias python2='python '
@@ -307,4 +307,4 @@ if [ -f "$fn" ]; then
   debug "Finished $fn"
 fi
 
-#echo "D: .zshenv: \$SHELL='$SHELL' (at end)"
+debug ".zshenv: \$SHELL='$SHELL' (at end)"

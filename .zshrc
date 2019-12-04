@@ -1,14 +1,8 @@
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
-#if (echo "$0" | grep -qv "bash$"); then
-#  if (echo "$SHELL" | grep -qv "bash$"); then
-#    . ~/.bash_profile
-#  fi
-#fi
-
-#echo "D: .zshrc: \$0='$0'"
-#echo "D: .zshrc: \$SHELL='$SHELL' (before)"
+#debug ".zshrc: \$0='$0'"
+#debug ".zshrc: \$SHELL='$SHELL' (before)"
 [[ "${0##*/}" == "bash" ]] && . ~/.bash_profile
-#echo "D: .zshrc: \$SHELL='$SHELL' (after)"
+debug ".zshrc: \$SHELL='$SHELL' (after)"
 
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
@@ -67,6 +61,8 @@ if [[ "${SHELL##*/}" == "zsh" ]]; then # This stuff is specific to zsh.
 fi
 
 # Set up command line editing and completion.
+debug "\$SHELL=$SHELL before autoload"
+debug "basename of \$SHELL=${SHELL##*/} before autoload"
 if [[ "${SHELL##*/}" == "zsh" ]]; then
   bindkey -v
   if [[ "$osname" != "SunOS" ]]; then
@@ -127,14 +123,15 @@ git_branch() {
 
 # Before each prompt, show the host name in the terminal window's title bar.
 precmd() {
-  mname=$(get_host_name)
-  branch=$(git_branch)
+  local mname=$(get_host_name)
+  local branch=$(git_branch)
+  local u=$(id -nu)
   [ -n "$branch" ] && branch=" (branch: $branch)"
   my_network=$(get_network_name)
-  windowtitle "$(id -nu)@$mname($$) $branch"
+  windowtitle "$u@$mname($$) $branch"
   tabtitle "$mname"
   [ -n "$iTermShellIntegration" ] && \
-    iterm2_set_user_var badge "$(echo -e "$USERNAME\n$mname\n$my_network")"
+    iterm2_set_user_var badge "$(echo -e "$u\n$mname\n$my_network")"
   # Not prompt-related, but keep our session from timing out.
   unset TMOUT
 }
