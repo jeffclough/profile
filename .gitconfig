@@ -1,0 +1,22 @@
+[user]
+	name = Jeff Clough
+	email = jeff@cloughcottage.com
+[push]
+        ;default = simple
+[core]
+        editor = vim
+	excludesfile = ~/.gitignore_global
+[color]
+        ui = true
+[alias]
+	br   = branch
+	ci   = commit
+	co   = checkout
+        cw   = diff --color-words
+        ;hist = log --pretty=format:'%h %ad | %s%d [%an]' --graph --date=short
+	;logg = log --graph --decorate --oneline --abbrev-commit --all
+        logd = log -p --color-words
+	logg = log --pretty=format:'%Cred%h%Creset %Cblue%ad%Creset %s%d %Cgreen%cn%Creset' --graph --date=short
+	logv = log --pretty=format:'%Cred%h%Creset %Cblue%ad%Creset %Cgreen%cn%Creset%d\n%s\n\n%b' --graph --date=short
+	st   = status
+	info = config remote.origin.url

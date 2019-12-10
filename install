@@ -85,6 +85,7 @@ install_link .zshrc
 install_link .vimrc
 install_link .bash_profile
 install_link .bashrc
+install_link .gitconfig
 install_link .psqlrc
 install_link .inputrc
 echo "Installed!"
