@@ -74,6 +74,14 @@ SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
 SCRIPT_ERROR='yes'
 
+# usage: strlen TEXT ...
+# Returns the number of characters in whatever text is given.
+strlen() {
+  local s="$*"
+  echo ${#s}
+}
+export -f strlen >/dev/null
+
 # usage: realpath PATH
 # Returns the absolute, canonical, no-symlinks path to PATH.
 realpath() {
