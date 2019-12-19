@@ -28,6 +28,9 @@ set expandtab
 set listchars=tab:>_
 autocmd Filetype python set list
 
+" Disable PEP-8 style enforcement of Python indenture.
+let g:python_recommended_style=0
+
 " Set up a formatlistpat that recognizes bullets as well as numbers. (I'm
 " using 'silent' here because it looks not all builds of vim recognize
 " formatlistpat, so this keeps those builds from complaining about it.)
