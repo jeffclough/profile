@@ -89,4 +89,7 @@ install_link .gitconfig
 install_link .gitignore_global
 install_link .psqlrc
 install_link .inputrc
+install_link .iterm2_shell_integration.bash
+install_link .iterm2_shell_integration.zsh
+install_link .iterm2
 echo "Installed!"

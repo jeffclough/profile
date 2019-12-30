@@ -147,3 +147,5 @@ Or if your system is sadly without curl, you can try wget like this:
 wget --no-check-certificate -qO- https://iterm2.com/misc/install_shell_integration_and_utilities.sh |\
 sed 's/curl -SsL/wget --no-check-certificate -qO-/' | bash
 ```
+
+**IN EITHER CASE,** be *SURE* to remove the line that's added to the end of .zshenv that sources ~/.iterm2_shell_integration.$SHELL. We do this semi-intelligently in .zshrc (or .bashrc) instead so that we can keep the .bash and .zsh versions from being sourced from the wrong shell. **FAILURE TO REMEMBER THIS AFTER UPDATING THE SHELL INTEGRATION SCRIPTS CAN SERIOUSLY MESS UP YOUR ABILITY TO LOG IN.**

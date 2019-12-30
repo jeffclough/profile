@@ -2,7 +2,7 @@
 #debug ".zshrc: \$0='$0'"
 #debug ".zshrc: \$SHELL='$SHELL' (before)"
 [[ "${0##*/}" == "bash" ]] && . ~/.bash_profile
-debug ".zshrc: \$SHELL='$SHELL' (after)"
+#debug ".zshrc: \$SHELL='$SHELL' (after)"
 
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
@@ -13,7 +13,14 @@ if [ -f "$fn" ]; then
   source "$fn"
   debug "Finished $fn"
 fi
-[ -n "${functions[iterm2_set_user_var]}" ] && export iTermShellIntegration=YES
+if [ -n "${functions[iterm2_set_user_var]}" ]; then
+  # Make sure iTerm shell integration is turned on.
+  export iTermShellIntegration=YES
+  # Alias ALL the commands in ~/.iterm2.
+  [ -d ~/.iterm2 ] && for cmd in ~/.iterm2/*; do
+    [ -x $cmd -a ! -d $cmd ] && alias ${cmd##*/}=$cmd
+  done
+fi
 
 # Run our prolog, if available.
 fn="$HOME/.rc-prolog"
