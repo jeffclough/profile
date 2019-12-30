@@ -20,6 +20,9 @@ if [ -n "${functions[iterm2_set_user_var]}" ]; then
   [ -d ~/.iterm2 ] && for cmd in ~/.iterm2/*; do
     [ -x $cmd -a ! -d $cmd ] && alias ${cmd##*/}=$cmd
   done
+  # Add some hand shortcuts for making fireworks.
+  alias fw="it2attention fireworks"
+  alias fwe="it2attention fireworks;exit"
 fi
 
 # Run our prolog, if available.
