@@ -17,7 +17,7 @@ isregularfile() {
 
 inode() {
   if [ -e "$1" ]; then
-    ls -i "$1" | cut -d' ' -f1
+    ls -di "$1" | cut -d' ' -f1
   else
     echo 0
   fi
