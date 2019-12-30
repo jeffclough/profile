@@ -74,6 +74,26 @@ SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
 SCRIPT_ERROR='yes'
 
+# usage: is_function FUNCTION_NAME
+# Return true (0), if the given function is defined. Otherwise, return
+# a value of false (anything other than 0).
+is_function() {
+  case "${SHELL##*/}" in
+    bash)
+      type $1 2>/dev/null | grep -q "is a function"
+      rc=$?
+      ;;
+    zsh)
+      test -n "${functions[$1]}"
+      rc=$?
+      ;;
+    *)
+      echo "is_function \"$1\": Not supported with shell: \"$SHELL\""
+      exit 1
+  esac
+  return $((rc+0))
+}
+
 # usage: strlen TEXT ...
 # Returns the number of characters in whatever text is given.
 strlen() {

@@ -13,7 +13,7 @@ if [ -f "$fn" ]; then
   source "$fn"
   debug "Finished $fn"
 fi
-if [ -n "${functions[iterm2_set_user_var]}" ]; then
+if is_function iterm2_set_user_var; then
   # Make sure iTerm shell integration is turned on.
   export iTermShellIntegration=YES
   # Alias ALL the commands in ~/.iterm2.
