@@ -9,10 +9,11 @@ print os.path.realpath("$1")
 EOF
 }
 
-# Returns 0 if the given file is an ordinary file (and not a symlink).
+# Returns 0 if the given file is an ordinary file or directory (and not
+# a symlink).
 # usage: isregularfile FILENAME
 isregularfile() {
-  [ -f "$1" -a ! -h "$1" ]
+  [  -f "$1" -o -d "$1" ] && [ ! -h "$1" ]
 }
 
 inode() {
