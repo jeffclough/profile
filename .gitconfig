@@ -20,3 +20,4 @@
 	logv = log --pretty=format:'%Cred%h%Creset %Cblue%ad%Creset %Cgreen%cn%Creset%d\n%s\n\n%b' --graph --date=short
 	st   = status
 	info = config remote.origin.url
+	alias = ! git config --get-regexp '^alias\\.'
