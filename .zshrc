@@ -211,7 +211,7 @@ else
   alias venv='echo "Install Python 3!" >&2; echo "" >/dev/null'
 fi
 
-alias R='sudo /bin/zsh -c "source ${HOME}/z" '
+#alias R='sudo /bin/zsh -c "source ${HOME}/z" '
 
 alias pt='ps -H'
 
