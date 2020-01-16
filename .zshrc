@@ -248,7 +248,7 @@ R() {
       SHELL=/bin/zsh sudo -s /bin/zsh -l
       ;;
     *)
-      echo "Unrecognized shell: ${1:-$SHELL}" >>&2
+      echo "Unrecognized shell: ${1:-$SHELL}" >&2
       exit 1
       ;;
   esac
