@@ -1,3 +1,7 @@
+# Make sure we're "home," even if we got here via sudo.
+export HOME="$(cd ~jclough;pwd)"
+cd
+
 # Run our prolog, if available.
 fn="$HOME/.profile-prolog"
 if [ -f "$fn" ]; then
@@ -5,6 +9,10 @@ if [ -f "$fn" ]; then
   source "$fn"
   debug "Finished $fn"
 fi
+
+# I know this is wrong. It is also necessary.
+source "$HOME/.zshenv"
+source "$HOME/.zshrc"
 
 # pip zsh completion start. (This corrects a bug in the default implementation.)
 function _pip_completion {
