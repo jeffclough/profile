@@ -192,11 +192,11 @@ export TIMELOG=-c
 alias less='less -R '
 
 if [[ "$osname" == 'SunOS' ]]; then
-alias ls='ls -F'
+  alias ls='ls -F'
 elif [[ "$osname" == 'Darwin' ]]; then
-alias ls='ls -G'
+  alias ls='ls -G'
 else
-alias ls='ls --color=auto'
+  alias ls='ls --color=auto'
 fi
 alias la='ls -a'
 alias ll='ls -l'
@@ -212,9 +212,9 @@ alias pgrep='grep -P'
 alias cpgrep='pgrep --color'
 
 if which python3 >/dev/null 2>&1; then
-alias venv='python3 -m venv '
+  alias venv='python3 -m venv '
 else
-alias venv='echo "Install Python 3!" >&2; echo "" >/dev/null'
+  alias venv='echo "Install Python 3!" >&2; echo "" >/dev/null'
 fi
 
 alias pt='ps -H'
