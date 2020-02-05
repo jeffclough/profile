@@ -80,7 +80,7 @@ cd
 trap 'cd -' INT TERM EXIT
 
 # Install symlinks to our new profile scripts.
-install_link .zprofile
+install_link .z
 install_link .zshenv
 install_link .zshrc
 install_link .vimrc
