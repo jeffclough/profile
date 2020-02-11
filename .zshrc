@@ -31,12 +31,12 @@ if is_function iterm2_set_user_var; then
   alias fwe='it2attention fireworks;sleep 1;exit'
 fi
 
-# Run our prolog, if available.
+# Run our prolog, if available (unless RC_PROLOG shows we've already been there).
 fn="$HOME/.rc-prolog"
-if [ -f "$fn" ]; then
-debug "Sourcing $fn"
-source "$fn"
-debug "Finished $fn"
+if [ -f "$fn" -a -z "$RC_PROLOG" ]; then
+  debug "Sourcing $fn"
+  source "$fn"
+  debug "Finished $fn"
 fi
 
 # Some general shell settings.
@@ -323,7 +323,7 @@ unset PAGER
 
 # Run our epilog, if available.
 fn="$HOME/.rc-epilog"
-if [ -f "$fn" ]; then
+if [ -f "$fn" -a -z "$RC_EPILOG" ]; then
   debug "Sourcing $fn"
   source "$fn"
   debug "Finished $fn"
