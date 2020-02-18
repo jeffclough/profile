@@ -150,8 +150,16 @@ export HOME="$(cd ~jclough;pwd)"
 if [[ "$HOME" =~ "/nethome/" && -d "/home/jclough" ]]; then
   # Always prefer /home/jclough to /nethome/jclough.
   export HOME=/home/jclough
+  # Change to the corresponding PWD under our new $HOME if possible.
+  if [[ "$PWD" =~ "/nethome/" ]]; then
+    p=${PWD/nethome/home}
+    if [[ -d "$p" ]]; then
+      cd "$p"
+    else
+      cd
+    fi
+  fi
 fi
-cd
 
 # Run our prolog, if available.
 fn="$HOME/.env-prolog"

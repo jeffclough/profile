@@ -1,7 +1,7 @@
-if [[ "$SUDO_USER" == "jclough" ]]; then
-  export USER=jclough
-  export HOME=~jclough
-fi
+#if [[ "$SUDO_USER" == "jclough" ]]; then
+#  export USER=jclough
+#  export HOME=~jclough
+#fi
 
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
 debug ".zshrc: \$ZSHENV_DONE='$ZSHENV_DONE'"
@@ -247,14 +247,6 @@ fi
 # Usage: R [shell]
 # Sudo to be root and run the given or default (current) shell.
 R() {
-  # Make sure we're "home," even if we got here via sudo.
-  export HOME="$(cd ~jclough;pwd)"
-  if [[ "$HOME" =~ "/nethome/" && -d "/home/jclough" ]]; then
-    # Always prefer /home/jclough to /nethome/jclough.
-    export HOME=/home/jclough
-  fi
-  cd
-
   shell=${1:-$SHELL}
   shell=${shell##*/}
   debug "R: shell='$shell'"
