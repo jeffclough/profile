@@ -1,3 +1,4 @@
+unset ZSHENV_DONE
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 # 
 # Set up basic output functions here so that they're available EVERYWHERE.
@@ -143,6 +144,14 @@ export -f date >/dev/null
 # Here begins the real profile work.
 #
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+
+# Make sure we're "home," even if we got here via sudo.
+export HOME="$(cd ~jclough;pwd)"
+if [[ "$HOME" =~ "/nethome/" && -d "/home/jclough" ]]; then
+  # Always prefer /home/jclough to /nethome/jclough.
+  export HOME=/home/jclough
+fi
+cd
 
 # Run our prolog, if available.
 fn="$HOME/.env-prolog"
@@ -336,3 +345,4 @@ if [ -f "$fn" ]; then
 fi
 
 debug ".zshenv: \$SHELL='$SHELL' (at end)"
+export ZSHENV_DONE=1

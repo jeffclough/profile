@@ -4,11 +4,12 @@ if [[ "$SUDO_USER" == "jclough" ]]; then
 fi
 
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
-#debug ".zshrc: \$0='$0'"
-#debug ".zshrc: \$SHELL='$SHELL' (before)"
+debug ".zshrc: \$ZSHENV_DONE='$ZSHENV_DONE'"
+debug ".zshrc: \$0='$0'"
+debug ".zshrc: \$SHELL='$SHELL' (before)"
 [[ "${0##*/}" == "bash" ]] && . ~/.bash_profile
-[[ "${0##*/}" == "zsh" ]] && . ~/.zshenv
-#debug ".zshrc: \$SHELL='$SHELL' (after)"
+[[ "${0##*/}" == "zsh" && -z "$ZSHENV_DONE" ]] && . ~/.zshenv
+debug ".zshrc: \$SHELL='$SHELL' (after)"
 
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
@@ -88,6 +89,17 @@ fi
 else
 set -o vi
 fi
+# pip zsh completion start. (This corrects a bug in the default implementation.)
+function _pip_completion {
+  local words cword
+  read -Ac words
+  read -cn cword
+  reply=( $( COMP_WORDS="$words[*]" \
+             COMP_CWORD=$(( cword-1 )) \
+             PIP_AUTO_COMPLETE=1 $words[1] ) )
+}
+compctl -K _pip_completion pip
+# pip zsh completion end
 
 # Set the title of the emulator window.
 windowtitle() {
@@ -235,6 +247,14 @@ fi
 # Usage: R [shell]
 # Sudo to be root and run the given or default (current) shell.
 R() {
+  # Make sure we're "home," even if we got here via sudo.
+  export HOME="$(cd ~jclough;pwd)"
+  if [[ "$HOME" =~ "/nethome/" && -d "/home/jclough" ]]; then
+    # Always prefer /home/jclough to /nethome/jclough.
+    export HOME=/home/jclough
+  fi
+  cd
+
   shell=${1:-$SHELL}
   shell=${shell##*/}
   debug "R: shell='$shell'"
