@@ -147,11 +147,11 @@ export -f date >/dev/null
 
 # Make sure we're "home," even if we got here via sudo.
 export HOME="$(cd ~jclough;pwd)"
-if [[ "$HOME" =~ "/nethome/" && -d "/home/jclough" ]]; then
+if (echo "$HOME"|grep -s "/nethome/") && [[ -d "/home/jclough" ]]; then
   # Always prefer /home/jclough to /nethome/jclough.
   export HOME=/home/jclough
   # Change to the corresponding PWD under our new $HOME if possible.
-  if [[ "$PWD" =~ "/nethome/" ]]; then
+  if (echo "$PWD"|grep -s "/nethome/"); then
     p=${PWD/nethome/home}
     if [[ -d "$p" ]]; then
       cd "$p"
@@ -164,9 +164,9 @@ fi
 # Run our prolog, if available.
 fn="$HOME/.env-prolog"
 if [ -f "$fn" ]; then
-  debug "Sourcing $fn"
+  debug ".zshenv: Sourcing $fn"
   source "$fn"
-  debug "Finished $fn"
+  debug ".zshenv: Finished $fn"
 fi
 
 # In support of platform dependence ...
@@ -194,13 +194,10 @@ else
           y='rhel'
           osrelease="$y$(grep -Po '(?<=release )\d+' $x)"
           # Keep Redhat's sadistically crafted /etc/zlogout from running.
-          #[[ "$(realpath "$SHELL")" =~ "zsh$" ]] && setopt noglobalrcs
-          #(realpath "$SHELL" | grep -q "zsh$") && setopt noglobalrcs
           [[ "${SHELL##*/}" == "zsh" ]] && setopt noglobalrcs
         elif grep -q 'Amazon Linux AMI' $x; then
           osrelease="$(grep -Po '(?<=^ID=")[a-z]+' $x)$(grep -Po '(?<=^VERSION_ID=")\d+\.\d+' $x)"
           # AMI inherited RHEL's evil /etc/zlogout.
-          #(realpath "$SHELL" | grep -q "zsh$") && setopt noglobalrcs
           [[ "${SHELL##*/}" == "zsh" ]] && setopt noglobalrcs
         fi
       fi
@@ -347,9 +344,9 @@ which python2 >/dev/null 2>&1 || alias python2='python '
 # Run our epilog, if available.
 fn="$HOME/.env-epilog"
 if [ -f "$fn" ]; then
-  debug "Sourcing $fn"
+  debug ".zshenv: Sourcing $fn"
   source "$fn"
-  debug "Finished $fn"
+  debug ".zshenv: Finished $fn"
 fi
 
 debug ".zshenv: \$SHELL='$SHELL' (at end)"

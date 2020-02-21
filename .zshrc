@@ -13,12 +13,14 @@ debug ".zshrc: \$SHELL='$SHELL' (after)"
 
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
+iterm2_hostname=$(uname -n) # DON'T let iTerm 2's shell indegration run "hostname -f"!
+debug ".zshrc: iterm2_hostname=$iterm2_hostname"
 fn="$HOME/.iterm2_shell_integration.$(basename "$SHELL")"
-debug "fn=$fn"
+debug ".zshrc: fn=$fn"
 if [ -f "$fn" ]; then
-  debug "Sourcing $fn"
+  debug ".zshrc: Sourcing $fn"
   source "$fn"
-  debug "Finished $fn"
+  debug ".zshrc: Finished $fn"
 fi
 if is_function iterm2_set_user_var; then
   # Make sure iTerm shell integration is turned on.
@@ -35,9 +37,9 @@ fi
 # Run our prolog, if available (unless RC_PROLOG shows we've already been there).
 fn="$HOME/.rc-prolog"
 if [ -f "$fn" -a -z "$RC_PROLOG" ]; then
-  debug "Sourcing $fn"
+  debug ".zshrc: Sourcing $fn"
   source "$fn"
-  debug "Finished $fn"
+  debug ".zshrc: Finished $fn"
 fi
 
 # Some general shell settings.
@@ -78,8 +80,8 @@ SAVEHIST=1000
 fi
 
 # Set up command line editing and completion.
-debug "\$SHELL=$SHELL before autoload"
-debug "basename of \$SHELL=${SHELL##*/} before autoload"
+debug ".zshrc: \$SHELL=$SHELL before autoload"
+debug ".zshrc: basename of \$SHELL=${SHELL##*/} before autoload"
 if [[ "${SHELL##*/}" == "zsh" ]]; then
 bindkey -v
 if [[ "$osname" != "SunOS" ]]; then
@@ -144,57 +146,57 @@ echo $real_ip
 # If PWD is in a Git repo, return the name of the current branch. Otherwise,
 # return nothing.
 git_branch() {
-local r
-r=$(git rev-parse --git-dir 2>>/dev/null)
-[ -n "$r" ] && basename $(cat $r/HEAD | cut -d' ' -f2)
+  local r
+  r=$(git rev-parse --git-dir 2>>/dev/null)
+  [ -n "$r" ] && basename $(cat $r/HEAD | cut -d' ' -f2)
 }
 
 # Before each prompt, show the host name in the terminal window's title bar.
 precmd() {
-local mname=$(get_host_name)
-local branch=$(git_branch)
-local u=$(id -nu)
-[ -n "$branch" ] && branch=" (branch: $branch)"
-my_network=$(get_network_name)
-windowtitle "$u@$mname($$) $branch"
-tabtitle "$mname"
-[ -n "$iTermShellIntegration" ] && \
-  iterm2_set_user_var badge "$(echo -e "$u\n$mname\n$my_network")"
-# Not prompt-related, but keep our session from timing out.
-unset TMOUT
+  local mname=$(get_host_name)
+  local branch=$(git_branch)
+  local u=$USERNAME
+  [ -n "$branch" ] && branch=" (branch: $branch)"
+  my_network=$(get_network_name)
+  windowtitle "$u@$mname($$) $branch"
+  tabtitle "$mname"
+  [ -n "$iTermShellIntegration" ] && \
+    iterm2_set_user_var badge "$(echo -e "$u\n$mname\n$my_network")"
+  # Not prompt-related, but keep our session from timing out.
+  unset TMOUT
 }
 
 # Set our prompt according to our effective uid.
 #echo "D: .zshrc: \$ROOT_PROMPT_COLOR=$ROOT_PROMPT_COLOR (before)"
 if [[ "${SHELL##*/}" == "zsh" ]]; then
-# Use zsh's enhanced prompt substitution.
-setopt PROMPT_SUBST
-# Root's prompt color defaults to yellow under zsh.
-export ROOT_PROMPT_COLOR=${ROOT_PROMPT_COLOR:-33}
+  # Use zsh's enhanced prompt substitution.
+  setopt PROMPT_SUBST
+  # Root's prompt color defaults to yellow under zsh.
+  export ROOT_PROMPT_COLOR=${ROOT_PROMPT_COLOR:-33}
 else
-# Root's prompt color defaults to red under lesser shell.
-export ROOT_PROMPT_COLOR=${ROOT_PROMPT_COLOR:-31}
+  # Root's prompt color defaults to red under lesser shell.
+  export ROOT_PROMPT_COLOR=${ROOT_PROMPT_COLOR:-31}
 fi
 #echo "D: .zshrc: \$ROOT_PROMPT_COLOR=$ROOT_PROMPT_COLOR (after)"
 # User's prompt color defaults to green.
 export USER_PROMPT_COLOR=${USER_PROMPT_COLOR:-32}
 # Let lesser shells know what prompt color to use.
-if [[ "$(id -u)" == "0" ]]; then 
-export PROMPT_COLOR=$ROOT_PROMPT_COLOR
+if [[ "$USERNAME" == "root" ]]; then 
+  export PROMPT_COLOR=$ROOT_PROMPT_COLOR
 else
-export PROMPT_COLOR=$USER_PROMPT_COLOR
+  export PROMPT_COLOR=$USER_PROMPT_COLOR
 fi
 mname=$(get_host_name)
 if [[ `uname -s` = "AIX" ]]; then
-PS1="%d%# "
+  PS1="%d%# "
 else
-if [[ "${SHELL##*/}" == "zsh" ]]; then
-  # Set the prompt content and color. Use the ROOT_PROMPT_COLOR and
-  # USER_PROMPT_COLOR varaibles for the colors.
-  PS1=$'%{\e[0;%(#.'"$ROOT_PROMPT_COLOR.$USER_PROMPT_COLOR"$')m%}$mname:%~%#%{\e[0m%} '
-else
-  PS1="\[\e[${PROMPT_COLOR}m\]$(get_host_name):\w\\$\[\e[0m\] "
-fi
+  if [[ "${SHELL##*/}" == "zsh" ]]; then
+    # Set the prompt content and color. Use the ROOT_PROMPT_COLOR and
+    # USER_PROMPT_COLOR varaibles for the colors.
+    PS1=$'%{\e[0;%(#.'"$ROOT_PROMPT_COLOR.$USER_PROMPT_COLOR"$')m%}$mname:%~%#%{\e[0m%} '
+  else
+    PS1="\[\e[${PROMPT_COLOR}m\]$(get_host_name):\w\\$\[\e[0m\] "
+  fi
 fi
 export PS1
 
@@ -249,14 +251,14 @@ fi
 R() {
   shell=${1:-$SHELL}
   shell=${shell##*/}
-  debug "R: shell='$shell'"
+  debug ".zshrc R(): shell='$shell'"
   case $shell in
     bash)
-      debug "R: SHELL=/bin/bash sudo -s /bin/bash --rcfile .bashrc -i"
+      debug ".zshrc R(): SHELL=/bin/bash sudo -s /bin/bash --rcfile .bashrc -i"
       SHELL=/bin/bash sudo -s /bin/bash --rcfile .bashrc -i
       ;;
     zsh)
-      debug "R: SHELL=/bin/zsh sudo -s /bin/zsh -l"
+      debug ".zshrc R(): SHELL=/bin/zsh sudo -s /bin/zsh -l"
       SHELL=/bin/zsh sudo -s /bin/zsh -l
       ;;
     *)
@@ -264,7 +266,7 @@ R() {
       exit 1
       ;;
   esac
-  debug "R: exiting"
+  debug ".zshrc R(): exiting"
 }
 
 # Usage: list_functions [-a]
@@ -336,8 +338,8 @@ unset PAGER
 # Run our epilog, if available.
 fn="$HOME/.rc-epilog"
 if [ -f "$fn" -a -z "$RC_EPILOG" ]; then
-  debug "Sourcing $fn"
+  debug ".zshrc: Sourcing $fn"
   source "$fn"
-  debug "Finished $fn"
+  debug ".zshrc: Finished $fn"
 fi
 unset fn # So we don't polute our new shell.
