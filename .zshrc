@@ -132,15 +132,16 @@ fi
 
 real_ip_time=0
 get_real_ip() {
-local t
-if [[ "$osname" == "Darwin" ]]; then
-  t=$(now -c)
-  if [[ $(( t - real_ip_time )) -gt 10 ]]; then
-    real_ip=$(curl -s ipchicken.com | pygrep -f '{}' '(^\d+\.\d+\.\d+\.\d+)')
-    real_ip_time=$t
+  local t
+  local real_ip
+  if [[ "$osname" == "Darwin" ]]; then
+    t=$(now -c)
+    if [[ $(( t - real_ip_time )) -gt 10 ]]; then
+      real_ip=$(curl -s ipchicken.com | pygrep -f '{}' '(^\d+\.\d+\.\d+\.\d+)')
+      real_ip_time=$t
+    fi
   fi
-fi
-echo $real_ip
+  echo $real_ip
 }
 
 # If PWD is in a Git repo, return the name of the current branch. Otherwise,

@@ -89,8 +89,8 @@ is_function() {
       rc=$?
       ;;
     *)
-      echo "is_function \"$1\": Not supported with shell: \"$SHELL\""
-      exit 1
+      error "is_function \"$1\": Not supported with shell: \"$SHELL\""
+      return 1
   esac
   return $((rc+0))
 }
