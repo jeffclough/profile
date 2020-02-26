@@ -147,7 +147,7 @@ export -f date >/dev/null
 
 # Make sure we're "home," even if we got here via sudo.
 export HOME="$(cd ~jclough;pwd)"
-if (echo "$HOME"|grep -s "/nethome/") && [[ -d "/home/jclough" ]]; then
+if (echo "$HOME"|grep -q "/nethome/") && [[ -d "/home/jclough" ]]; then
   # Always prefer /home/jclough to /nethome/jclough.
   export HOME=/home/jclough
   # Change to the corresponding PWD under our new $HOME if possible.
