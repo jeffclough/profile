@@ -3,13 +3,15 @@
 #  export HOME=~jclough
 #fi
 
+type debug | grep -q 'shell function' || . ~/.zshenv
+
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
-debug ".zshrc: \$ZSHENV_DONE='$ZSHENV_DONE'"
-debug ".zshrc: \$0='$0'"
-debug ".zshrc: \$SHELL='$SHELL' (before)"
-[[ "${0##*/}" == "bash" ]] && . ~/.bash_profile
-[[ "${0##*/}" == "zsh" && -z "$ZSHENV_DONE" ]] && . ~/.zshenv
-debug ".zshrc: \$SHELL='$SHELL' (after)"
+#debug ".zshrc: \$ZSHENV_DONE='$ZSHENV_DONE'"
+#debug ".zshrc: \$0='$0'"
+#debug ".zshrc: \$SHELL='$SHELL' (before)"
+#[[ "${0##*/}" == "bash" ]] && . ~/.bash_profile
+#[[ "${0##*/}" == "zsh" && -z "$ZSHENV_DONE" ]] && . ~/.zshenv
+#debug ".zshrc: \$SHELL='$SHELL' (after)"
 
 # BEFORE sourcing any .rc-prolog code for this interactive session,
 # enable iTerm's shell integration.
@@ -182,6 +184,7 @@ fi
 # User's prompt color defaults to green.
 export USER_PROMPT_COLOR=${USER_PROMPT_COLOR:-32}
 # Let lesser shells know what prompt color to use.
+export USERNAME=$(id -nu)
 if [[ "$USERNAME" == "root" ]]; then 
   export PROMPT_COLOR=$ROOT_PROMPT_COLOR
 else
