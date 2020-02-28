@@ -75,13 +75,19 @@ SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
 SCRIPT_ERROR='yes'
 
+# Usage: qgrep ARGS ...
+# This works like "grep -q" on systems where grep has no -q option.
+qgrep() {
+  grep $@ >/dev/null 2>&1
+}
+
 # usage: is_function FUNCTION_NAME
 # Return true (0), if the given function is defined. Otherwise, return
 # a value of false (anything other than 0).
 is_function() {
   case "${SHELL##*/}" in
     bash)
-      type $1 2>/dev/null | grep -q "is a function"
+      type $1 2>/dev/null | qgrep "is a function"
       rc=$?
       ;;
     zsh)
@@ -147,7 +153,7 @@ export -f date >/dev/null
 
 # Make sure we're "home," even if we got here via sudo.
 export HOME="$(cd ~jclough;pwd)"
-if (echo "$HOME"|grep -q "/nethome/") && [[ -d "/home/jclough" ]]; then
+if (echo "$HOME"|qgrep "/nethome/") && [[ -d "/home/jclough" ]]; then
   # Always prefer /home/jclough to /nethome/jclough.
   export HOME=/home/jclough
   # Change to the corresponding PWD under our new $HOME if possible.
@@ -190,12 +196,12 @@ else
     # Check for Red Hat.
     for x in /etc/redhat-release /etc/os-release; do
       if [[ -f "$x" ]]; then
-        if grep -q 'Red Hat Enterprise Linux' $x; then
+        if qgrep 'Red Hat Enterprise Linux' $x; then
           y='rhel'
           osrelease="$y$(grep -Po '(?<=release )\d+' $x)"
           # Keep Redhat's sadistically crafted /etc/zlogout from running.
           [[ "${SHELL##*/}" == "zsh" ]] && setopt noglobalrcs
-        elif grep -q 'Amazon Linux AMI' $x; then
+        elif qgrep 'Amazon Linux AMI' $x; then
           osrelease="$(grep -Po '(?<=^ID=")[a-z]+' $x)$(grep -Po '(?<=^VERSION_ID=")\d+\.\d+' $x)"
           # AMI inherited RHEL's evil /etc/zlogout.
           [[ "${SHELL##*/}" == "zsh" ]] && setopt noglobalrcs
