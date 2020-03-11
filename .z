@@ -1,12 +1,19 @@
-# I source this file after becoming root of sudo refuses to let me be me.
+# I source this file after becoming root of sudo refuses to let me be me. It's
+# very primitive because it has to run anywhere.
+
+# Usage: qgrep ARGS ...
+# This works like "grep -q" on systems where grep has no -q option.
+qgrep() {
+  grep $@ >/dev/null 2>&1
+}
 
 # Make sure we're "home," even if we got here via sudo.
 export HOME="$(cd ~jclough;pwd)"
-if [[ "$HOME" =~ "/nethome/" && -d "/home/jclough" ]]; then
+if (echo $HOME | qgrep "/nethome/") && [[ -d "/home/jclough" ]]; then
   # Always prefer /home/jclough to /nethome/jclough.
   export HOME=/home/jclough
   # Change to the corresponding PWD under our new $HOME if possible.
-  if [[ "$PWD" =~ "/nethome/" ]]; then
+  if echo "$PWD" | qgrep "/nethome/"; then
     p=${PWD/nethome/home}
     if [[ -d "$p" ]]; then
       cd "$p"
@@ -19,4 +26,3 @@ fi
 # I know this is wrong. It is also necessary.
 source "$HOME/.zshenv"
 source "$HOME/.zshrc"
-
