@@ -319,9 +319,29 @@ function ML {
 }
 export -f ML >/dev/null
 
+# Usage: words RE
+# Use "egrep -i" to find words from /usr/share/dict/words matching RE.
+# This is great for looking for chossword puzzle solutions.
 function words {
   egrep -i "^$1$" /usr/share/dict/words
 }
+export -f words >/dev/null
+
+# Usage: ana WORD
+# Write to standard output a list of all words that with all leters in common
+# with WORD.
+anagram() {
+  python <<EOF
+a=''.join(sorted('$1')).lower()
+l=len(a)
+with open('/usr/share/dict/words') as f:
+  print '\n'.join([
+    w2 for w2 in [w1 for w1 in [w0.split()[0].lower() for w0 in f]if len(w1)==l]
+    if ''.join(sorted(w2))==a
+  ])
+EOF
+}
+export -f anagram >/dev/null
 
 # Usage: svn-modified [args to "svn status"]
 # This just runs "svn status $@" and filters the output with "grep -v '^\?'".
