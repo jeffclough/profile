@@ -170,10 +170,15 @@ fi
 # Run our prolog, if available.
 fn="$HOME/.env-prolog"
 if [ -f "$fn" ]; then
+  debug "PATH=$PATH"
   debug ".zshenv: Sourcing $fn"
   source "$fn"
   debug ".zshenv: Finished $fn"
+  debug "PATH=$PATH"
 fi
+
+debug "Starting .zshrc"
+debug "PATH=$PATH"
 
 # In support of platform dependence ...
 osname=$(uname -s)
@@ -308,6 +313,8 @@ prepend_path() {
 #   Prepend $app_path/(lib/python|lib) to PYTHONPATH.
 #   Prepend $app_path/(man|share/man) to MANPATH.
 prepend_paths() {
+  debug "  prepend_paths $1"
+  debug "    PATH=$PATH"
   dir="$1"
   dir="${dir//\/\///}"
 
@@ -325,6 +332,9 @@ prepend_paths() {
   MANPATH=$(prepend_path "$dir/man" "$MANPATH")
   MANPATH=$(prepend_path "$dir/share/man" "$MANPATH")
   export MANPATH
+
+  debug "    PATH=$PATH"
+  debug "  prepend_paths returns"
 }
 
 if [ -x "$HOME/go" ]; then
@@ -347,12 +357,17 @@ export PYTHONPATH
 unalias python2 2>/dev/null
 which python2 >/dev/null 2>&1 || alias python2='python '
 
+debug "PATH=$PATH"
+debug "Ending .zshrc"
+
 # Run our epilog, if available.
 fn="$HOME/.env-epilog"
 if [ -f "$fn" ]; then
+  debug "PATH=$PATH"
   debug ".zshenv: Sourcing $fn"
   source "$fn"
   debug ".zshenv: Finished $fn"
+  debug "PATH=$PATH"
 fi
 
 debug ".zshenv: \$SHELL='$SHELL' (at end)"

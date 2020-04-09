@@ -39,10 +39,15 @@ fi
 # Run our prolog, if available (unless RC_PROLOG shows we've already been there).
 fn="$HOME/.rc-prolog"
 if [ -f "$fn" -a -z "$RC_PROLOG" ]; then
+  debug "PATH=$PATH"
   debug ".zshrc: Sourcing $fn"
   source "$fn"
   debug ".zshrc: Finished $fn"
+  debug "PATH=$PATH"
 fi
+
+debug ".zshrc: Starting"
+debug "PATH=$PATH"
 
 # Some general shell settings.
 export CLICOLOR=1
@@ -339,11 +344,16 @@ unset PAGER
 [ -f /usr/bin/less ] && export PAGER="/usr/bin/less -R"
 [ -z "$PAGER" -a -f /usr/bin/more ] && export PAGER=/usr/bin/more
 
+debug "PATH=$PATH"
+debug ".zshrc: Ending"
+
 # Run our epilog, if available.
 fn="$HOME/.rc-epilog"
 if [ -f "$fn" -a -z "$RC_EPILOG" ]; then
+  debug "PATH=$PATH"
   debug ".zshrc: Sourcing $fn"
   source "$fn"
   debug ".zshrc: Finished $fn"
+  debug "PATH=$PATH"
 fi
 unset fn # So we don't polute our new shell.
