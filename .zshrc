@@ -63,7 +63,7 @@ get_host_name() {
 /bin/hostname | sed -e 's/\.gatech\.edu$//' -e 's/.*\.bluehost\.com$/bluehost.com/' -e 's/\.local$//' -e 's/^ipsec-.*/GTmactop/' -e 's/^lawn-.*/GTmactop/' -e 's/192\.168\..*/mactop/' -e 's/^coda-.*/GTmactop/'
 }
 
-export -f get_host_name >/dev/null
+autoload -Uz get_host_name >/dev/null
 
 #
 # Set up command history:
@@ -313,7 +313,7 @@ list_functions() {
   esac
   return 0
 }
-export -f list_functions >/dev/null
+autoload -Uz list_functions >/dev/null
 
 # Usage: ML [RE]
 # The optional regular expression limits output to matching lines.
@@ -322,7 +322,7 @@ function ML {
   [ $# -gt 0 ] && OPT="--keep $1"
   mark -i --palette 'red on black,green,yellow,cyan,magenta' $(echo $OPT) '(\bFATAL:.*)|(\bE(RROR)?:.*)|(.*\bRED\b.* )' '(\bL(OG)?:.*)|(\bI(NFO)?:.*)|(.*\bGREEN\b.*)' '(\bW(ARN(ING)?)?:.*)|(.*\bYELLOW\b.*)' '\bD(EBUG|ETAIL)?:.*' '\bN(OTICE)?:.*'
 }
-export -f ML >/dev/null
+autoload -Uz ML >/dev/null
 
 # Usage: words RE
 # Use "egrep -i" to find words from /usr/share/dict/words matching RE.
@@ -330,7 +330,7 @@ export -f ML >/dev/null
 function words {
   egrep -i "^$1$" /usr/share/dict/words
 }
-export -f words >/dev/null
+autoload -Uz words >/dev/null
 
 # Usage: ana WORD
 # Write to standard output a list of all words that with all leters in common
@@ -346,14 +346,14 @@ with open('/usr/share/dict/words') as f:
   ])
 EOF
 }
-export -f anagram >/dev/null
+autoload -Uz anagram >/dev/null
 
 # Usage: svn-modified [args to "svn status"]
 # This just runs "svn status $@" and filters the output with "grep -v '^\?'".
 function svn-status {
   svn status $@ | grep -v '^\?'
 }
-export -f svn-status >/dev/null
+autoload -Uz svn-status >/dev/null
 
 # Point EDITOR at vim, or failing that, vi.
 export EDITOR=$(which vim)

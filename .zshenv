@@ -42,34 +42,34 @@ echo_tc() {
     echo -e "$(date) $@"
   fi
 }
-export -f echo_tc >/dev/null
+autoload -Uz echo_tc >/dev/null
 
 debug() {
   [ -n "$SCRIPT_DEBUG" ] && echo_tc "$colorDebug" D: $@
 }
-export -f debug >/dev/null
+autoload -Uz debug >/dev/null
 
 info() {
   [ -n "$SCRIPT_INFO" ] && echo_tc "$colorInfo" I: $@
 }
-export -f info >/dev/null
+autoload -Uz info >/dev/null
 
 notice() {
   [ -n "$SCRIPT_NOTICE" ] && echo_tc "$colorNotice" N: $@
 }
-export -f notice >/dev/null
+autoload -Uz notice >/dev/null
 
 warning() {
   [ -n "$SCRIPT_WARNING" ] && echo_tc "${colorWarning}" W: $@
 }
-export -f warning >/dev/null
+autoload -Uz warning >/dev/null
 
 error() {
   [ -n "$SCRIPT_ERROR" ] && echo_tc "${colorError}" E: $@
 }
-export -f error >/dev/null
+autoload -Uz error >/dev/null
 
-#SCRIPT_DEBUG='yes'
+SCRIPT_DEBUG=''
 SCRIPT_INFO='yes'
 SCRIPT_NOTICE='yes'
 SCRIPT_WARNING='yes'
@@ -107,7 +107,7 @@ strlen() {
   local s="$*"
   echo ${#s}
 }
-export -f strlen >/dev/null
+autoload -Uz strlen >/dev/null
 
 # usage: realpath PATH
 # Returns the absolute, canonical, no-symlinks path to PATH.
@@ -117,7 +117,7 @@ import os.path
 print(os.path.realpath("$@"))
 EOF
 }
-export -f realpath >/dev/null
+autoload -Uz realpath >/dev/null
 
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
 debug ".zshenv: \$0='$0'"
@@ -143,7 +143,7 @@ which python2 >/dev/null 2>&1 || alias python2='python '
 date() {
   /bin/date "${@:-+%Y-%m-%d %H:%M:%S}"
 }
-export -f date >/dev/null
+autoload -Uz date >/dev/null
 
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 #
