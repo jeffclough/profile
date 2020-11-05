@@ -27,9 +27,11 @@ set expandtab
 " Show hard tabs, but only in Python files.
 set listchars=tab:>_
 autocmd Filetype python set list
+autocmd Filetype rust set list
 
 " Disable PEP-8 style enforcement of Python indenture.
 let g:python_recommended_style=0
+let g:rust_recommended_style=0
 
 " Set up a formatlistpat that recognizes bullets as well as numbers. (I'm
 " using 'silent' here because it looks not all builds of vim recognize
@@ -54,6 +56,7 @@ endif
 
 autocmd Filetype java   setlocal ts=2 st=2 sw=2 noexpandtab
 autocmd Filetype python setlocal ts=8 st=2 sw=2 expandtab
+autocmd Filetype rust setlocal ts=8 st=2 sw=2 expandtab
 
 " We know xterm-debian is a color terminal
 " if &term =~ "xterm-debian" || &term =~ "xterm-xfree86"
