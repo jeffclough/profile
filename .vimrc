@@ -55,6 +55,7 @@ if has("autocmd")
 endif
 
 autocmd Filetype java   setlocal ts=2 st=2 sw=2 noexpandtab
+autocmd Filetype markdown setlocal ts=8 st=2 sw=2 expandtab
 autocmd Filetype python setlocal ts=8 st=2 sw=2 expandtab
 autocmd Filetype rust setlocal ts=8 st=2 sw=2 expandtab
 
