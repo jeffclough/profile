@@ -81,6 +81,42 @@ qgrep() {
   grep $@ >/dev/null 2>&1
 }
 
+# Usage: fahrenheit CELSIUS_TEMP
+# Outputs CELCIUS_TEMP in Farenheit degrees. The argument must be a base-10,
+# possibly floating point number. Floating point numbers may be expressed in
+# either standard or scientific notation, and values on the interval (-1,1)
+# need not have a 0 to the left of the decimal point.
+fahrenheit() {
+  if [ $# -eq 1 ]; then
+    if [[ "$1" =~ "^([-+]?[0-9]+(\.[0-9]+)?(e[-+]?[0-9]+)?|[-+]?(\.[0-9]+)(e[-+]?[0-9]+)?)$" ]]; then
+      printf "%0.1f\n" $(($1*1.8+32)) | sed 's/\.0$//'
+    else
+      echo "$0: Celsius degrees must be a base-10, possibly floating point number."
+    fi
+  else
+    echo "$0: Exactly one argument (Celsius degrees) must be given."
+  fi
+}
+autoload -Uz fahrenheit >/dev/null
+
+# Usage: celsius FAHRENHEIT_TEMP
+# Outputs FAHRENHEIT_TEMP in Celsius degrees. The argument must be a base-10,
+# possibly floating point number. Floating point numbers may be expressed in
+# either standard or scientific notation, and values on the interval (-1,1)
+# need not have a 0 to the left of the decimal point.
+celsius() {
+  if [ $# -eq 1 ]; then
+    if [[ "$1" =~ "^([-+]?[0-9]+(\.[0-9]+)?(e[-+]?[0-9]+)?|[-+]?(\.[0-9]+)(e[-+]?[0-9]+)?)$" ]]; then
+      printf "%0.1f\n" $((($1-32)/1.8)) | sed 's/\.0$//'
+    else
+      echo "$0: Fahrenheit degrees must be a base-10, possibly floating point number."
+    fi
+  else
+    echo "$0: Exactly one argument (Fahrenheit degrees) must be given."
+  fi
+}
+autoload -Uz celsius >/dev/null
+
 # usage: is_function FUNCTION_NAME
 # Return true (0), if the given function is defined. Otherwise, return
 # a value of false (anything other than 0).
