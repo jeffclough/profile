@@ -231,8 +231,8 @@ alias lrtail='lrt|tail '
 
 alias cgrep='grep --color'
 alias cegrep='egrep --color'
-alias pgrep='grep -P'
-alias cpgrep='pgrep --color'
+#alias pgrep='grep -P'
+#alias cpgrep='pgrep --color'
 
 if which python3 >/dev/null 2>&1; then
   alias venv='python3 -m venv '
