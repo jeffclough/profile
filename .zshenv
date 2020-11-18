@@ -188,17 +188,19 @@ autoload -Uz date >/dev/null
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 # Make sure we're "home," even if we got here via sudo.
-export HOME="$(cd ~jclough;pwd)"
-if (echo "$HOME"|qgrep "/nethome/") && [[ -d "/home/jclough" ]]; then
-  # Always prefer /home/jclough to /nethome/jclough.
-  export HOME=/home/jclough
-  # Change to the corresponding PWD under our new $HOME if possible.
-  if (echo "$PWD"|grep -s "/nethome/"); then
-    p=${PWD/nethome/home}
-    if [[ -d "$p" ]]; then
-      cd "$p"
-    else
-      cd
+if id -u jclough &>/dev/null; then
+  export HOME="$(cd ~jclough;pwd)"
+  if (echo "$HOME"|qgrep "/nethome/") && [[ -d "/home/jclough" ]]; then
+    # Always prefer /home/jclough to /nethome/jclough.
+    export HOME=/home/jclough
+    # Change to the corresponding PWD under our new $HOME if possible.
+    if (echo "$PWD"|grep -s "/nethome/"); then
+      p=${PWD/nethome/home}
+      if [[ -d "$p" ]]; then
+        cd "$p"
+      else
+        cd
+      fi
     fi
   fi
 fi
