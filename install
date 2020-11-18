@@ -5,7 +5,7 @@
 realpath() {
   python <<EOF
 import os.path
-print os.path.realpath("$1")
+print(os.path.realpath("$1"))
 EOF
 }
 
