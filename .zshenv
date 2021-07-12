@@ -408,5 +408,8 @@ if [ -f "$fn" ]; then
   debug "PATH=$PATH"
 fi
 
+# Export the dimensions of our terminal so applications can see them.
+export COLUMNS LINES
+
 debug ".zshenv: \$SHELL='$SHELL' (at end)"
 export ZSHENV_DONE=1
