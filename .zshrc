@@ -227,7 +227,16 @@ alias llh='ll -h'
 alias lla='ll -a'
 alias lld='ll -d'
 alias lrt='ll -rt'
-alias lrtail='lrt|tail '
+#alias lrtail='lrt|tail '
+
+function lrtail {
+  local tail_opt=''
+  if [[ "$1" =~ "^-.*" ]]; then
+    tail_opt="$1"
+    shift
+  fi
+  ls -lrt $@ | tail $tail_opt
+}
 
 alias cgrep='grep --color'
 alias cegrep='egrep --color'
