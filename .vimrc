@@ -112,3 +112,7 @@ hi PreProc    term=underline  ctermfg=12            guifg=#ff80ff
 hi Special    term=bold       ctermfg=12            guifg=Orange
 hi Statement  term=bold       ctermfg=15            gui=bold guifg=#ffff60
 hi Type       term=underline  ctermfg=14            gui=bold guifg=#60ff60
+
+command -nargs=1 WW :set tw=<args>
+command -nargs=0 WC :set tw=72
+command -nargs=0 WZ :set tw=0
