@@ -231,17 +231,17 @@ alias lrt='ll -rt'
 
 function lrtail {
   local tail_opt=''
-  if [[ "$1" =~ "^-.*" ]]; then
-    tail_opt="$1"
-    shift
-  fi
+  case "$1" in
+    ^-[0-9]+$)
+      tail_opt="$1"
+      shift
+      ;;
+  esac
   ls -lrt $@ | tail $tail_opt
 }
 
 alias cgrep='grep --color'
 alias cegrep='egrep --color'
-#alias pgrep='grep -P'
-#alias cpgrep='pgrep --color'
 
 if which python3 >/dev/null 2>&1; then
   alias venv='python3 -m venv '
