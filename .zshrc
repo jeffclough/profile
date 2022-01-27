@@ -227,16 +227,13 @@ alias llh='ll -h'
 alias lla='ll -a'
 alias lld='ll -d'
 alias lrt='ll -rt'
-#alias lrtail='lrt|tail '
 
 function lrtail {
   local tail_opt=''
-  case "$1" in
-    ^-[0-9]+$)
-      tail_opt="$1"
-      shift
-      ;;
-  esac
+  if [[ "$1" =~ "^-.*" ]]; then
+    tail_opt="$1"
+    shift
+  fi
   ls -lrt $@ | tail $tail_opt
 }
 
