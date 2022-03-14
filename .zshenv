@@ -385,8 +385,8 @@ for p in / /usr /opt/local /sw /usr/local /usr/local/go /usr/local/mysql /opt/su
 do
   prepend_paths "$p"
 done
-PYTHONPATH=$(prepend_path "$HOME/my/lib/python" "$PYTHONPATH")
 PYTHONPATH=$(prepend_path "$HOME/my/lib/python2" "$PYTHONPATH")
+PYTHONPATH=$(prepend_path "$HOME/my/lib/python" "$PYTHONPATH")
 export PYTHONPATH
 
 # We set up our python2 alias very early in this script because it might be
