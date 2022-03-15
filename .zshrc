@@ -169,7 +169,7 @@ precmd() {
   windowtitle "$u@$mname($$) $branch"
   tabtitle "$mname"
   [ -n "$iTermShellIntegration" ] && \
-    iterm2_set_user_var badge "$(echo -e "$u\n$mname\n$my_network")"
+    iterm2_set_user_var badge "$(echo -e "$(basename $SHELL):$u\n$mname\n$my_network")"
   # Not prompt-related, but keep our session from timing out.
   unset TMOUT
 }
