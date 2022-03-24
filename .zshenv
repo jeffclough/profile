@@ -148,10 +148,7 @@ autoload -Uz strlen >/dev/null
 # usage: realpath PATH
 # Returns the absolute, canonical, no-symlinks path to PATH.
 realpath() {
-  python <<EOF
-import os.path
-print(os.path.realpath("$@"))
-EOF
+  readlink -f "$@" 2>>/dev/null
 }
 autoload -Uz realpath >/dev/null
 
@@ -165,9 +162,6 @@ if [[ "${0##*/}" == "bash" ]]; then
 fi
 export SHELL
 debug ".zshenv: \$SHELL='$SHELL' (after)"
-
-# If we're on a system where there's no python2, try just using python.
-which python2 >/dev/null 2>&1 || alias python2='python '
 
 # Usage:
 #   date [OPTION]... [+FORMAT]
@@ -385,15 +379,14 @@ for p in / /usr /opt/local /sw /usr/local /usr/local/go /usr/local/mysql /opt/su
 do
   prepend_paths "$p"
 done
-PYTHONPATH=$(prepend_path "$HOME/my/lib/python2" "$PYTHONPATH")
 PYTHONPATH=$(prepend_path "$HOME/my/lib/python" "$PYTHONPATH")
 export PYTHONPATH
 
 # We set up our python2 alias very early in this script because it might be
 # needed that early, but we revisit that here (after setting up our PATH) in
 # case things have changed.
-unalias python2 2>/dev/null
-which python2 >/dev/null 2>&1 || alias python2='python '
+#unalias python2 2>/dev/null
+#which python2 >/dev/null 2>&1 || alias python2='python '
 
 debug "PATH=$PATH"
 debug "Ending .zshrc"
