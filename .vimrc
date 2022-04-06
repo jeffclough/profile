@@ -25,9 +25,11 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab
 " Show hard tabs, but only in Python files.
-set listchars=tab:>_
-autocmd Filetype python set list
-autocmd Filetype rust set list
+set listchars=tab:▸·
+set list " On second thought, show tabs for in all files.
+"autocmd Filetype python set list
+"autocmd Filetype markdown set list
+"autocmd Filetype rust set list
 
 " Disable PEP-8 style enforcement of Python indenture.
 let g:python_recommended_style=0
@@ -113,6 +115,12 @@ hi Special    term=bold       ctermfg=12            guifg=Orange
 hi Statement  term=bold       ctermfg=15            gui=bold guifg=#ffff60
 hi Type       term=underline  ctermfg=14            gui=bold guifg=#60ff60
 
-command -nargs=1 WW :set tw=<args>
-command -nargs=0 WC :set tw=72
-command -nargs=0 WZ :set tw=0
+command -nargs=1 WW :set tw=<args> "Set wrap-width to the given argument.
+command -nargs=0 WPD :set tw=72    "Set wrap-width for Python docstrings.
+command -nargs=0 WZ :set tw=0      "Set wrap-width to 0 (no wrapping).
+" Use hard-coded tab characters (width=8) for whatever shift-width is given.
+command -nargs=1 TH :set noet ci pi sts=<args> sw=<args> ts=8
+" Use soft tabs for whatever shift-width is given.
+command -nargs=1 TS :set et noci nopi sts=<args> sw=<args> ts=8
+" Show out tab settings.
+command -nargs=0 TQ :set et? ci? pi? sts? sw? ts?
