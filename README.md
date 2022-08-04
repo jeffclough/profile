@@ -98,6 +98,7 @@ command history options, command aliases, and window title management here.
 
 ### Shell functions:
 
+- `anagram TEXT` Output all anagrams of the given word.
 - `tabtitle TEXT` Set the title of the current session tab. (Requires iTerm2 integration)
 - `windowtitle TEXT` Set the title of the current terminal window. (Requires iTerm2 integration)
 - `precmd` Manages the shell prompt, and if iTerm2 integration is enabled, set the terminal tab text and window title.
