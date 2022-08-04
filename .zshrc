@@ -342,14 +342,14 @@ autoload -Uz words >/dev/null
 # Write to standard output a list of all words that with all leters in common
 # with WORD.
 anagram() {
-  python <<EOF
+  python3 <<EOF
 a=''.join(sorted('$1')).lower()
 l=len(a)
 with open('/usr/share/dict/words') as f:
-  print '\n'.join([
+  print('\n'.join([
     w2 for w2 in [w1 for w1 in [w0.split()[0].lower() for w0 in f]if len(w1)==l]
     if ''.join(sorted(w2))==a
-  ])
+  ]))
 EOF
 }
 autoload -Uz anagram >/dev/null
