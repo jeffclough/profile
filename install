@@ -2,11 +2,8 @@
 
 # Output the canonical, no-symlinks path to the given filename or directory.
 # usage: realpath FILENAME
-realpath() {
-  python <<EOF
-import os.path
-print(os.path.realpath("$1"))
-EOF
+realpath () {
+  readlink -f "$@" 2>> /dev/null
 }
 
 # Returns 0 if the given file is an ordinary file or directory (and not
@@ -83,6 +80,7 @@ trap 'cd -' INT TERM EXIT
 install_link .z
 install_link .zshenv
 install_link .zshrc
+install_link .zlogout
 install_link .vimrc
 install_link .bash_profile
 install_link .bashrc
