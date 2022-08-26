@@ -212,7 +212,7 @@ export PS1
 # Turn on timelog's color features.
 export TIMELOG=-c
 
-alias less='less -R '
+alias less='less -RX '
 
 if [[ "$osname" == 'SunOS' ]]; then
   alias ls='ls -F'
@@ -367,7 +367,7 @@ export EDITOR=$(which vim)
 
 # Point PAGER at less, or failing that, more.
 unset PAGER
-[ -f /usr/bin/less ] && export PAGER="/usr/bin/less -R"
+[ -f /usr/bin/less ] && export PAGER="/usr/bin/less -RX"
 [ -z "$PAGER" -a -f /usr/bin/more ] && export PAGER=/usr/bin/more
 
 debug "PATH=$PATH"
