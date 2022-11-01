@@ -13,6 +13,7 @@ set viminfo='20,\"50	" read/write a .viminfo file, don't store more than
 			" 50 lines of registers
 set history=500		" keep 500 lines of command line history
 set ruler		" show the cursor position all the time
+set virtualedit=block   " Let the cursor move past EoL in block mode
 
 " Suffixes that get lower priority when doing tab completion for filenames.
 " These are files we are not likely to want to edit or read.
