@@ -298,7 +298,7 @@ for part in my archos "$rt_env_type"; do
   fi
 done
 export ARCHOS
-for branch in bin sbin lib man share share/man; do
+for branch in bin sbin lib etc man share share/man; do
   d="$ARCHOS/$branch"
   if [ ! -d "$d" ]; then
     mkdir "$d"
@@ -375,7 +375,7 @@ fi
     
 # Prepend bin, sbin, lib, and man subdirectories (if they exist) of the
 # following paths to the appropriate environment variables' values.
-for p in / /usr /opt/local /sw /usr/local /usr/local/go /usr/local/mysql /opt/subversion /usr/local/git "$GOPATH" /usr/local/jeff "$HOME/my" "$HOME/test"
+for p in / /usr /opt/local /sw /usr/local /usr/local/go /usr/local/mysql /opt/subversion /usr/local/git "$GOPATH" /usr/local/jeff "$ARCHOS" "$HOME/my" "$HOME/test"
 do
   prepend_paths "$p"
 done
