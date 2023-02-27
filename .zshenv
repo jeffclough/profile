@@ -220,7 +220,7 @@ if [[ "$osname" == "Darwin" ]]; then
   architecture=$(uname -m)
   osrelease=$(sw_vers -productVersion|cut -d. -f-2)
 else 
-  # Treat this is (more or less) straight Unix (whatever that is).
+  # Treat this as (more or less) straight Unix (whatever that is).
   oskernel=$(uname -r|cut -d. -f-2)
   architecture=$(uname -p)
   if [[ "$architecture" == "unknown" ]]; then
@@ -285,6 +285,7 @@ EOF
     echo "$osname $osrelease $oskernel $architecture"
   fi
 }
+autoload -Uz archos >/dev/null
 
 # Make a place for architecture/OS dependent files, because home directories
 # might be shared among machines with architectural differences.
@@ -298,6 +299,7 @@ for part in my archos "$rt_env_type"; do
   fi
 done
 export ARCHOS
+
 for branch in bin sbin lib etc man share share/man; do
   d="$ARCHOS/$branch"
   if [ ! -d "$d" ]; then
