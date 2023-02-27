@@ -371,7 +371,6 @@ unset PAGER
 [ -z "$PAGER" -a -f /usr/bin/more ] && export PAGER=/usr/bin/more
 
 debug "PATH=$PATH"
-debug ".zshrc: Ending"
 
 # Run our epilog, if available.
 fn="$HOME/.rc-epilog"
@@ -383,3 +382,5 @@ if [ -f "$fn" -a -z "$RC_EPILOG" ]; then
   debug "PATH=$PATH"
 fi
 unset fn # So we don't polute our new shell.
+
+debug ".zshrc: Ending"

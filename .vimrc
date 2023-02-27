@@ -26,7 +26,8 @@ set softtabstop=2
 set shiftwidth=2
 set expandtab
 " Show hard tabs, but only in Python files.
-set listchars=tab:▸·
+#set listchars=tab:▸·
+set listchars=tab:>.
 set list " On second thought, show tabs for in all files.
 "autocmd Filetype python set list
 "autocmd Filetype markdown set list
