@@ -248,8 +248,9 @@ fi
 
 alias pt='ps -H'
 
-alias vi="$(which vim) -u ~/.vimrc "
-alias view="vi -R "
+#alias vi="$(which vim) -u ~/.vimrc "
+#alias vi="$(which vim) "
+#alias view="vi -R "
 
 # Use MD to colorize diff output.
 alias MD='mark -Idiff'
