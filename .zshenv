@@ -377,7 +377,7 @@ fi
     
 # Prepend bin, sbin, lib, and man subdirectories (if they exist) of the
 # following paths to the appropriate environment variables' values.
-for p in / /usr /opt/local /sw /usr/local /usr/local/go /usr/local/mysql /opt/subversion /usr/local/git "$GOPATH" /usr/local/jeff "$ARCHOS" "$HOME/my" "$HOME/test"
+for p in / /usr /opt/local /sw /usr/local /usr/local/go /usr/local/mysql /opt/subversion /usr/local/git "$GOPATH" /usr/local/jeff "$ARCHOS" "$HOME/my" "$HOME/.local" "$HOME/test"
 do
   prepend_paths "$p"
 done
