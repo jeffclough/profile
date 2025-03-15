@@ -22,8 +22,8 @@ set suffixes=.bak,~,.swp,.o,.info,.aux,.log,.dvi,.bbl,.blg,.brf,.cb,.ind,.idx,.i
 " Set up autoindent to use spaces rather than tabs and to place tab stops
 " at every two characters.
 set tabstop=8
-set softtabstop=2
-set shiftwidth=2
+set softtabstop=4
+set shiftwidth=4
 set expandtab
 " Show hard tabs, but only in Python files.
 "set listchars=tab:▸·
@@ -60,7 +60,7 @@ endif
 
 autocmd Filetype java   setlocal ts=2 st=2 sw=2 noexpandtab
 autocmd Filetype markdown setlocal ts=8 st=2 sw=2 expandtab
-autocmd Filetype python setlocal ts=8 st=2 sw=2 expandtab
+autocmd Filetype python setlocal ts=8 st=2 sw=4 expandtab
 autocmd Filetype rust setlocal ts=8 st=2 sw=2 expandtab
 
 " We know xterm-debian is a color terminal
