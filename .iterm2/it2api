@@ -1,8 +1,13 @@
-#!/usr/bin/env python3.7
+#!/usr/bin/env python3
 
 import argparse
 import asyncio
-import iterm2
+try:
+  import iterm2
+except ModuleNotFoundError:
+  print("The current version of Python doesn't have the 'iterm2' module installed. Please run:")
+  print("\n    $ python3 -m pip install iterm2\n")
+  exit()
 import logging
 import re
 import sys
@@ -389,11 +394,10 @@ async def saved_arrangement(connection, args):
     elif args.action == "restore":
       await w.async_restore_window_arrangement(args.name)
   else:
-    a = await iterm2.async_get_app(connection)
     if args.action == "save":
-      await a.async_save_window_arrangement(args.name)
+      await iterm2.Arrangement.async_save(connection, args.name)
     elif args.action == "restore":
-      await a.async_restore_window_arrangement(args.name)
+      await iterm2.Arrangement.async_restore(connection, args.name)
 
 async def show_focus(connection, args):
   a = await iterm2.async_get_app(connection)

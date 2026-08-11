@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 trap clean_up EXIT
 trap clean_up INT
@@ -23,7 +23,7 @@ function show_help() {
 # <sequence> ST, and for all ESCs in <sequence> to be replaced with ESC ESC. It
 # only accepts ESC backslash for ST.
 function print_osc() {
-    if [[ $TERM == screen* ]] ; then
+    if [[ $TERM == screen* || $TERM == tmux* ]] ; then
         printf "\033Ptmux;\033\033]"
     else
         printf "\033]"
@@ -32,10 +32,50 @@ function print_osc() {
 
 # More of the tmux workaround described above.
 function print_st() {
-    if [[ $TERM == screen* ]] ; then
+    if [[ $TERM == screen* || $TERM == tmux* ]] ; then
         printf "\a\033\\"
     else
         printf "\a"
+    fi
+}
+
+send_tmux() {
+    uid=$RANDOM$RANDOM
+    print_osc
+    inosc=1
+    printf '1337;Copy=2;%s' "$uid"
+    print_st
+    inosc=0
+    fold | while read line
+    do
+        print_osc
+        inosc=1
+        printf '1337;Copy=3;%s:%s' "$uid" "$line"
+        print_st
+        inosc=0
+    done
+
+    print_osc
+    inosc=1
+    printf '1337;Copy=4;%s' "$uid"
+    print_st
+    inosc=0
+}
+
+send_regular() {
+    print_osc
+    inosc=1
+    printf '1337;Copy=:%s'
+    cat
+    print_st
+    inosc=0
+}
+
+send() {
+    if [[ $TERM == tmux* ]]; then
+        send_tmux
+    else
+        send_regular
     fi
 }
 
@@ -53,12 +93,7 @@ while [ $# -gt 0 ]; do
       ;;
     *)
         if [ -r "$1" ] ; then
-            data=$(base64 < "$1")
-            print_osc
-            inosc=1
-            printf '1337;Copy=:%s' "$data"
-            print_st
-            inosc=0
+            base64 < $1 | send
             exit 0
         else
             error "it2copy: $1: No such file or directory"
@@ -69,10 +104,4 @@ while [ $# -gt 0 ]; do
     shift
 done
 
-data=$(base64)
-print_osc
-inosc=1
-printf '1337;Copy=:%s' "$data"
-print_st
-inosc=0
-
+base64 | send
