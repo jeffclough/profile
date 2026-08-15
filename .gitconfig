@@ -28,3 +28,6 @@
 	smudge = git-lfs smudge -- %f
 [pull]
 	rebase = false
+[include]
+        path = ~/.gitconfig.local
+
