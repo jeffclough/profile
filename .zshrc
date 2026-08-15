@@ -5,6 +5,14 @@
 
 type debug | grep -q 'shell function' || . ~/.zshenv
 
+# Add Homebrew completions to fpath
+if [ -d "/opt/homebrew/share/zsh/site-functions" ]; then
+  fpath=(/opt/homebrew/share/zsh/site-functions $fpath)
+fi
+
+# Initialize completion system
+autoload -Uz compinit && compinit
+
 # If bash (<shudder/>) is sourcing this script, remember that and play nice.
 #debug ".zshrc: \$ZSHENV_DONE='$ZSHENV_DONE'"
 #debug ".zshrc: \$0='$0'"
